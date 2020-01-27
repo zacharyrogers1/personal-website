@@ -6,6 +6,7 @@
     "start": "ng serve",
     "build": "ng build",
     "build:prod": "ng build --prod=true",
+    "deploy:prod": "ng build --prod=true && aws s3 cp ./dist/personal-website/ s3://personal-website-cloudfront-distribution-bucket --recursive --profile ZachTerraform",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
