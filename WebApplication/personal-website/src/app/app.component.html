@@ -1,5 +1,4 @@
-<ngx-gauge [type]="gaugeType" [value]="gaugeValue" [label]="gaugeLabel" [append]="gaugeAppendText" [min]="gaugeMin" [max]="gaugeMax">
-</ngx-gauge>
+<mat-slider [min]="sliderMax" [min]="sliderMin" [tickInterval]="sliderTickInterval" [thumbLabel]="showThumbLabel" [value]="sliderValue" (change)="whatToDoWhenValueChanges($event)"></mat-slider>
 
 <button mat-raised-button (click)="setTo5()">Set Gauge to 5</button>
 <button mat-raised-button (click)="setTo180()">Set Gauge to 180</button>

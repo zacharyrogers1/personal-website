@@ -8,18 +8,23 @@ import { Component } from '@angular/core';
 export class AppComponent {
   title = 'personal-website';
 
-  gaugeType = 'full';
-  gaugeValue = 30;
-  gaugeLabel = 'Blinds Position';
-  gaugeAppendText = 'degrees';
-  gaugeMin = 0;
-  gaugeMax = 180;
+  sliderValue=0;
+  sliderMin = 0;
+  sliderMax = 180;
+  sliderTickInterval = 10;
+  showThumbLabel = true;
+  
 
   setTo5(){
-    this.gaugeValue = 5;
+    this.sliderValue = 5;
   }
 
   setTo180(){
-    this.gaugeValue = 180;
+    this.sliderValue = 180;
+  }
+
+  whatToDoWhenValueChanges(event) {
+    console.log(event);
+    console.log("here is the value!", event.value);
   }
 }
