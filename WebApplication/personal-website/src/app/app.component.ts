@@ -1,25 +1,81 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { device, DeviceOptions } from 'aws-iot-device-sdk';
+import { CognitoIdentity, config, CognitoIdentityCredentials } from 'aws-sdk';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
+  constructor() { }
+
+  mqttClient;
+  cognitoIdentity;
+  deviceOptions: DeviceOptions = {
+    region: 'us-west-2',
+    host: 'a1n8ytbh0zio90-ats.iot.us-east-1.amazonaws.com',
+    clientId: 'Needs_to_be_unique',
+    protocol: 'wss',
+    maximumReconnectTimeMs: 30000,
+    debug: true,
+    accessKeyId: '',
+    secretKey: '',
+    sessionToken: ''
+  };
+
+
   title = 'personal-website';
 
-  sliderValue=0;
+  sliderValue = 0;
   sliderMin = 0;
   sliderMax = 180;
   sliderTickInterval = 10;
   showThumbLabel = true;
+
   
 
-  setTo5(){
+  ngOnInit() {
+    config.region = 'us-west-2';
+    config.credentials = new CognitoIdentityCredentials({
+      IdentityPoolId: 'us-west-2:ce91c067-fcf7-4681-837c-625d29244057'
+    });
+    this.mqttClient = new device(this.deviceOptions);
+    this.cognitoIdentity = new CognitoIdentity();
+    config.credentials.get(function (err, data) {
+      console.log("tried to grab credentials: ", data);
+      // if (!err) {
+      //   console.log('retrieved identity: ' + AWS.config.credentials.identityId);
+      //   var params = {
+      //     IdentityId: AWS.config.credentials.identityId
+      //   };
+      //   cognitoIdentity.getCredentialsForIdentity(params, function (err, data) {
+      //     if (!err) {
+      //       //
+      //       // Update our latest AWS credentials; the MQTT client will use these
+      //       // during its next reconnect attempt.
+      //       //
+      //       mqttClient.updateWebSocketCredentials(data.Credentials.AccessKeyId,
+      //         data.Credentials.SecretKey,
+      //         data.Credentials.SessionToken);
+      //     } else {
+      //       console.log('error retrieving credentials: ' + err);
+      //       alert('error retrieving credentials: ' + err);
+      //     }
+      //   });
+      // } else {
+      //   console.log('error retrieving identity:' + err);
+      //   alert('error retrieving identity: ' + err);
+      // }
+    });
+  }
+
+
+  setTo5() {
     this.sliderValue = 5;
   }
 
-  setTo180(){
+  setTo180() {
     this.sliderValue = 180;
   }
 
