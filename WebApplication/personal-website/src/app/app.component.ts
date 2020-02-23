@@ -15,11 +15,11 @@ export class AppComponent implements OnInit {
   sliderMax = 180;
   sliderTickInterval = 10;
   showThumbLabel = true;
-  localConfig : GlobalConfigInstance = config;
-  mqttClient : device;
+  localConfig: GlobalConfigInstance = config;
+  mqttClient: device;
   cognitoIdentity;
   mqttMessagesForDisplay = [];
-  deviceOptions: DeviceOptions =  {
+  deviceOptions: DeviceOptions = {
     region: 'us-west-2',
     host: 'a1n8ytbh0zio90-ats.iot.us-west-2.amazonaws.com',
     clientId: 'Needs_to_be_unique',
@@ -30,8 +30,8 @@ export class AppComponent implements OnInit {
     secretKey: '',
     sessionToken: ''
   };
-  subscruptionTopic = 'blah/blah';
-  
+  subscruptionTopic = '$aws/things/ConsoleThing2/shadow/update';
+
   constructor() { }
 
   ngOnInit() {
@@ -41,17 +41,13 @@ export class AppComponent implements OnInit {
     });
     this.mqttClient = new device(this.deviceOptions);
     this.cognitoIdentity = new CognitoIdentity();
-    (<CognitoIdentityCredentials>this.localConfig.credentials).get((err : AWSError) => {
+    (<CognitoIdentityCredentials>this.localConfig.credentials).get((err: AWSError) => {
       if (!err) {
         var params = {
           IdentityId: (<CognitoIdentityCredentials>this.localConfig.credentials).identityId
         };
         this.cognitoIdentity.getCredentialsForIdentity(params, (err, data) => {
           if (!err) {
-            //
-            // Update our latest AWS credentials; the MQTT client will use these
-            // during its next reconnect attempt.
-            //
             this.mqttClient.updateWebSocketCredentials(data.Credentials.AccessKeyId,
               data.Credentials.SecretKey,
               data.Credentials.SessionToken,
@@ -72,22 +68,27 @@ export class AppComponent implements OnInit {
   }
 
   handleMqttMessage = (topic, payload) => {
-    console.log(payload)
     this.mqttMessagesForDisplay.push(payload);
   }
 
 
   setTo5() {
-    this.sliderValue = 5;
   }
 
   setTo180() {
-    this.sliderValue = 180;
-    this.mqttMessagesForDisplay.push('hello');
+    var textToPublish = JSON.stringify({
+      "state": {
+        "desired": {
+          "position": this.sliderValue.toString()
+        }
+      }
+    });
+    console.log("slider value", this.sliderValue);
+    this.mqttClient.publish(this.subscruptionTopic, textToPublish);
   }
 
   whatToDoWhenValueChanges(event) {
-    console.log(event);
     console.log("here is the value!", event.value);
+    this.sliderValue = event.value;
   }
 }
