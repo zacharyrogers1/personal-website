@@ -24,7 +24,7 @@ export class AppComponent implements OnInit {
     host: 'a1n8ytbh0zio90-ats.iot.us-west-2.amazonaws.com',
     clientId: 'Needs_to_be_unique',
     protocol: 'wss',
-    maximumReconnectTimeMs: 30000,
+    maximumReconnectTimeMs: 8000,
     debug: true,
     accessKeyId: '',
     secretKey: '',
@@ -68,7 +68,7 @@ export class AppComponent implements OnInit {
   }
 
   handleMqttMessage = (topic, payload) => {
-    this.mqttMessagesForDisplay.push(payload);
+    this.mqttMessagesForDisplay.push(topic + "   " + payload);
   }
 
   setTo180() {
