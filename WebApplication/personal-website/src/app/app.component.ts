@@ -16,9 +16,9 @@ export class AppComponent implements OnInit {
   sliderTickInterval = 10;
   showThumbLabel = true;
   localConfig : GlobalConfigInstance = config;
-  mqttClient;
+  mqttClient : device;
   cognitoIdentity;
-  rachelsGarbage;
+  mqttMessagesForDisplay = [];
   deviceOptions: DeviceOptions =  {
     region: 'us-west-2',
     host: 'a1n8ytbh0zio90-ats.iot.us-west-2.amazonaws.com',
@@ -30,6 +30,7 @@ export class AppComponent implements OnInit {
     secretKey: '',
     sessionToken: ''
   };
+  subscruptionTopic = 'blah/blah';
   
   constructor() { }
 
@@ -40,7 +41,6 @@ export class AppComponent implements OnInit {
     });
     this.mqttClient = new device(this.deviceOptions);
     this.cognitoIdentity = new CognitoIdentity();
-    console.log("AWS Config before retrieving identity", this.localConfig.credentials);
     (<CognitoIdentityCredentials>this.localConfig.credentials).get((err : AWSError) => {
       if (!err) {
         var params = {
@@ -54,8 +54,8 @@ export class AppComponent implements OnInit {
             //
             this.mqttClient.updateWebSocketCredentials(data.Credentials.AccessKeyId,
               data.Credentials.SecretKey,
-              data.Credentials.SessionToken);
-            console.log('MQtt client', this.mqttClient);
+              data.Credentials.SessionToken,
+              undefined);
           } else {
             console.log('error retrieving credentials: ' + err);
             alert('error retrieving credentials: ' + err);
@@ -66,6 +66,14 @@ export class AppComponent implements OnInit {
         alert('error retrieving identity: ' + err);
       }
     });
+
+    this.mqttClient.subscribe(this.subscruptionTopic);
+    this.mqttClient.on('message', this.handleMqttMessage);
+  }
+
+  handleMqttMessage = (topic, payload) => {
+    console.log(payload)
+    this.mqttMessagesForDisplay.push(payload);
   }
 
 
@@ -75,6 +83,7 @@ export class AppComponent implements OnInit {
 
   setTo180() {
     this.sliderValue = 180;
+    this.mqttMessagesForDisplay.push('hello');
   }
 
   whatToDoWhenValueChanges(event) {
