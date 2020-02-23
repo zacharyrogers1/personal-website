@@ -71,10 +71,6 @@ export class AppComponent implements OnInit {
     this.mqttMessagesForDisplay.push(payload);
   }
 
-
-  setTo5() {
-  }
-
   setTo180() {
     var textToPublish = JSON.stringify({
       "state": {

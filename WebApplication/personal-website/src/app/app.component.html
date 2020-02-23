@@ -4,9 +4,7 @@
 <mat-slider [max]="sliderMax" [min]="sliderMin" [tickInterval]="sliderTickInterval" [thumbLabel]="showThumbLabel" [value]="sliderValue" (change)="whatToDoWhenValueChanges($event)"></mat-slider>
 
 
-
-<button mat-raised-button (click)="setTo5()">Set Gauge to 5</button>
-<button mat-raised-button (click)="setTo180()">Set Gauge to 180</button>
+<button mat-raised-button (click)="setTo180()">Send IoT Command</button>
 
 <!-- <p>{{hello}}</p> -->
 <li *ngFor="let obj of mqttMessagesForDisplay">{{obj}}</li>
