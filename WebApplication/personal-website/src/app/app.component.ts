@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { device, DeviceOptions } from 'aws-iot-device-sdk';
-import { CognitoIdentity, config, CognitoIdentityCredentials } from 'aws-sdk';
+import { CognitoIdentity, config, CognitoIdentityCredentials, AWSError } from 'aws-sdk';
+import { GlobalConfigInstance } from 'aws-sdk/lib/config';
+import { stringify } from 'querystring';
 
 @Component({
   selector: 'app-root',
@@ -8,6 +10,13 @@ import { CognitoIdentity, config, CognitoIdentityCredentials } from 'aws-sdk';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
+  title = 'personal-website';
+  sliderValue = 0;
+  sliderMin = 0;
+  sliderMax = 180;
+  sliderTickInterval = 10;
+  showThumbLabel = true;
+  localConfig : GlobalConfigInstance = config;
   constructor() { }
 
   mqttClient;
@@ -24,51 +33,47 @@ export class AppComponent implements OnInit {
     secretKey: '',
     sessionToken: ''
   };
-
-
-  title = 'personal-website';
-
-  sliderValue = 0;
-  sliderMin = 0;
-  sliderMax = 180;
-  sliderTickInterval = 10;
-  showThumbLabel = true;
+  // cognitoIdentityOptions: CognitoIdentityCredentials.CognitoIdentityOptions = 
 
   
 
+  //Config needs
+  //set region
+  //set credentials
+
+
   ngOnInit() {
-    config.region = 'us-west-2';
-    this.rachelsGarbage = new CognitoIdentityCredentials({
-      IdentityPoolId: 'us-west-2:ce91c067-fcf7-4681-837c-625d29244057'
+    this.localConfig.region = 'us-west-2';
+    config.credentials = new CognitoIdentityCredentials({
+      IdentityPoolId: "us-west-2:ce91c067-fcf7-4681-837c-625d29244057"
     });
     this.mqttClient = new device(this.deviceOptions);
     this.cognitoIdentity = new CognitoIdentity();
-    this.rachelsGarbage.get(function (err, data) {
-      console.log("tried to grab credentials: ", data);
-      console.log("Here is the err: ", err);
-      // if (!err) {
-      //   console.log('retrieved identity: ' + AWS.config.credentials.identityId);
-      //   var params = {
-      //     IdentityId: AWS.config.credentials.identityId
-      //   };
-      //   cognitoIdentity.getCredentialsForIdentity(params, function (err, data) {
-      //     if (!err) {
-      //       //
-      //       // Update our latest AWS credentials; the MQTT client will use these
-      //       // during its next reconnect attempt.
-      //       //
-      //       mqttClient.updateWebSocketCredentials(data.Credentials.AccessKeyId,
-      //         data.Credentials.SecretKey,
-      //         data.Credentials.SessionToken);
-      //     } else {
-      //       console.log('error retrieving credentials: ' + err);
-      //       alert('error retrieving credentials: ' + err);
-      //     }
-      //   });
-      // } else {
-      //   console.log('error retrieving identity:' + err);
-      //   alert('error retrieving identity: ' + err);
-      // }
+    console.log("AWS Config before retrieving identity", this.localConfig.credentials);
+    (<CognitoIdentityCredentials>this.localConfig.credentials).get((err : AWSError) => {
+      if (!err) {
+        console.log('retrieved identity: ' + config);
+        var params = {
+          IdentityId: (<CognitoIdentityCredentials>this.localConfig.credentials).identityId
+        };
+        this.cognitoIdentity.getCredentialsForIdentity(params, (err, data) => {
+          if (!err) {
+            //
+            // Update our latest AWS credentials; the MQTT client will use these
+            // during its next reconnect attempt.
+            //
+            this.mqttClient.updateWebSocketCredentials(data.Credentials.AccessKeyId,
+              data.Credentials.SecretKey,
+              data.Credentials.SessionToken);
+          } else {
+            console.log('error retrieving credentials: ' + err);
+            alert('error retrieving credentials: ' + err);
+          }
+        });
+      } else {
+        console.log('error retrieving identity:' + err);
+        alert('error retrieving identity: ' + err);
+      }
     });
   }
 
