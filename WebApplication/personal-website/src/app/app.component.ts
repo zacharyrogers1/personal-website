@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { device, DeviceOptions } from 'aws-iot-device-sdk';
 import { CognitoIdentity, config, CognitoIdentityCredentials, AWSError } from 'aws-sdk';
 import { GlobalConfigInstance } from 'aws-sdk/lib/config';
+import { v4 } from 'uuid';
 
 @Component({
   selector: 'app-root',
@@ -19,10 +20,11 @@ export class AppComponent implements OnInit {
   mqttClient: device;
   cognitoIdentity;
   mqttMessagesForDisplay = [];
+  clientIdUuid: string = v4();
   deviceOptions: DeviceOptions = {
     region: 'us-west-2',
     host: 'a1n8ytbh0zio90-ats.iot.us-west-2.amazonaws.com',
-    clientId: 'Needs_to_be_unique',
+    clientId: this.clientIdUuid,
     protocol: 'wss',
     maximumReconnectTimeMs: 8000,
     debug: true,

@@ -25,11 +25,13 @@
     "@angular/router": "~9.0.1",
     "@types/aws-iot-device-sdk": "^2.2.1",
     "@types/aws-sdk": "^2.7.0",
+    "@types/uuid": "^3.4.7",
     "aws-iot-device-sdk": "^2.2.3",
     "aws-sdk": "^2.620.0",
     "ngx-gauge": "^1.1.0",
     "rxjs": "~6.5.4",
     "tslib": "^1.10.0",
+    "uuid": "^3.4.0",
     "zone.js": "~0.10.2"
   },
   "devDependencies": {
