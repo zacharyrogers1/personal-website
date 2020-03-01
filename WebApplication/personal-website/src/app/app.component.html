@@ -1,10 +1,24 @@
 <div>
     <h1>SPACING!</h1>
 </div>
-<mat-slider [max]="sliderMax" [min]="sliderMin" [tickInterval]="sliderTickInterval" [thumbLabel]="showThumbLabel" [value]="sliderValue" (change)="whatToDoWhenValueChanges($event)"></mat-slider>
+<div>
+    <mat-slider [max]="sliderMax" [min]="sliderMin" [tickInterval]="sliderTickInterval" [thumbLabel]="showThumbLabel"
+        [(ngModel)]="sliderValue"></mat-slider>
 
+    <button mat-raised-button (click)="publishSliderValue()">Send IoT Slider Value</button>
+</div>
 
-<button mat-raised-button (click)="setTo180()">Send IoT Command</button>
+<mat-form-field appearance="fill">
+    <mat-label>IoT string</mat-label>
+    <input matInput [(ngModel)]="iotTextValue">
+</mat-form-field>
+<button mat-raised-button (click)="publishTextValue()">Send IoT Text</button>
+
+<mat-chip-list class="mat-chip-list-stacked" aria-label="Color selection">
+    <mat-chip selected [color]="clientConnectionStatus.color">
+        {{clientConnectionStatus.statusText}}
+    </mat-chip>
+</mat-chip-list>
 
 <!-- <p>{{hello}}</p> -->
 <li *ngFor="let obj of mqttMessagesForDisplay">{{obj}}</li>

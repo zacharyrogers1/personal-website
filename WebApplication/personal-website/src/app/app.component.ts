@@ -10,12 +10,12 @@ import { v4 } from 'uuid';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-  title = 'personal-website';
-  sliderValue = 0;
-  sliderMin = 0;
-  sliderMax = 180;
-  sliderTickInterval = 10;
-  showThumbLabel = true;
+  title: string = 'personal-website';
+  sliderValue: number = 0;
+  sliderMin: number = 0;
+  sliderMax: number = 180;
+  sliderTickInterval: number = 10;
+  showThumbLabel: boolean = true;
   localConfig: GlobalConfigInstance = config;
   mqttClient: device;
   cognitoIdentity;
@@ -33,6 +33,9 @@ export class AppComponent implements OnInit {
     sessionToken: ''
   };
   subscruptionTopic = '$aws/things/ConsoleThing2/shadow/update';
+  iotTextValue: string = '';
+
+  clientConnectionStatus = {statusText: 'Not Connected to IoT Broker', color: 'warn'};
 
   constructor() { }
 
@@ -67,13 +70,25 @@ export class AppComponent implements OnInit {
 
     this.mqttClient.subscribe(this.subscruptionTopic);
     this.mqttClient.on('message', this.handleMqttMessage);
+    this.mqttClient.on('connect', this.clientConnect);
+    this.mqttClient.on('offline', this.clientDisconnect);
+  }
+
+  clientConnect = () => {
+    this.clientConnectionStatus.statusText = 'Connected to IoT Broker!';
+    this.clientConnectionStatus.color = 'primary';
+  }
+
+  clientDisconnect = () => {
+    this.clientConnectionStatus.statusText = 'Not Connected to IoT Broker';
+    this.clientConnectionStatus.color = 'warn';
   }
 
   handleMqttMessage = (topic, payload) => {
-    this.mqttMessagesForDisplay.push(topic + "   " + payload);
+    this.mqttMessagesForDisplay.push("Topic: " + topic + " Message: " + payload);
   }
 
-  setTo180() {
+  publishSliderValue() {
     var textToPublish = JSON.stringify({
       "state": {
         "desired": {
@@ -85,8 +100,7 @@ export class AppComponent implements OnInit {
     this.mqttClient.publish(this.subscruptionTopic, textToPublish);
   }
 
-  whatToDoWhenValueChanges(event) {
-    console.log("here is the value!", event.value);
-    this.sliderValue = event.value;
+  publishTextValue() {
+    this.mqttClient.publish(this.subscruptionTopic, this.iotTextValue);
   }
 }
