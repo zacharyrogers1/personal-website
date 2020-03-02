@@ -20,5 +20,11 @@
     </mat-chip>
 </mat-chip-list>
 
+<mat-chip-list class="mat-chip-list-stacked" aria-label="Color selection">
+    <mat-chip selected [color]="deviceConnectionStatus.color">
+        {{deviceConnectionStatus.statusText}}
+    </mat-chip>
+</mat-chip-list>
+
 <!-- <p>{{hello}}</p> -->
 <li *ngFor="let obj of mqttMessagesForDisplay">{{obj}}</li>

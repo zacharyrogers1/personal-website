@@ -3,6 +3,7 @@ import { device, DeviceOptions } from 'aws-iot-device-sdk';
 import { CognitoIdentity, config, CognitoIdentityCredentials, AWSError } from 'aws-sdk';
 import { GlobalConfigInstance } from 'aws-sdk/lib/config';
 import { v4 } from 'uuid';
+import { Subject, Observable, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -32,10 +33,16 @@ export class AppComponent implements OnInit {
     secretKey: '',
     sessionToken: ''
   };
-  subscruptionTopic = '$aws/things/ConsoleThing2/shadow/update';
+  shadowUpdateTopic: string = '$aws/things/ConsoleThing2/shadow/update';
+  getShadowTopic: string = '$aws/things/ConsoleThing2/shadow/get';
+  getShadowTopicAccepted: string = '$aws/things/ConsoleThing2/shadow/get/accepted';
+  shadowDeltaTopic: string = '$aws/things/ConsoleThing2/shadow/update/delta';
   iotTextValue: string = '';
-
-  clientConnectionStatus = {statusText: 'Not Connected to IoT Broker', color: 'warn'};
+  clientConnectionStatus = { statusText: 'Not Connected to IoT Broker', color: 'warn' };
+  deviceConnectionStatus = { statusText: 'Loading', color: 'warn' }
+  shadowStateDocument;
+  deviceConnectionSubject: Subject<boolean> = new Subject<boolean>();
+  deviceConnectionListener: Subscription;
 
   constructor() { }
 
@@ -68,10 +75,26 @@ export class AppComponent implements OnInit {
       }
     });
 
-    this.mqttClient.subscribe(this.subscruptionTopic);
+    this.deviceConnectionListener = this.deviceConnectionSubject.subscribe((isConnected) => {
+      console.log('this is is connected', isConnected);
+      if (isConnected === true) {
+        this.deviceConnectionStatus.statusText = 'Device is Connected!';
+        this.deviceConnectionStatus.color = 'primary'
+      }
+      else {
+        this.deviceConnectionStatus.statusText = 'Device is Disconnected!';
+        this.deviceConnectionStatus.color = 'warn'
+      }
+    });
+
+    this.mqttClient.subscribe(this.shadowUpdateTopic);
+    this.mqttClient.subscribe(this.getShadowTopic);
+    this.mqttClient.subscribe(this.getShadowTopicAccepted);
+    this.mqttClient.subscribe(this.shadowDeltaTopic);
     this.mqttClient.on('message', this.handleMqttMessage);
     this.mqttClient.on('connect', this.clientConnect);
     this.mqttClient.on('offline', this.clientDisconnect);
+    this.mqttClient.publish(this.getShadowTopic, "{}");
   }
 
   clientConnect = () => {
@@ -85,7 +108,21 @@ export class AppComponent implements OnInit {
   }
 
   handleMqttMessage = (topic, payload) => {
-    this.mqttMessagesForDisplay.push("Topic: " + topic + " Message: " + payload);
+    if (topic === this.getShadowTopicAccepted) {
+      this.shadowStateDocument = JSON.parse(payload);
+      this.deviceConnectionSubject.next(this.shadowStateDocument.state.reported.connected);
+      console.log(this.shadowStateDocument.state.reported.connected)
+      return
+    }
+
+    if(topic === this.shadowUpdateTopic){
+      const objectpayload = JSON.parse(payload);
+      console.log('this is objectpayload', objectpayload.state.reported.connected);
+      if(objectpayload.state.reported.connected === false) {
+        this.deviceConnectionSubject.next(objectpayload.state.reported.connected)
+      }
+    }
+    this.mqttMessagesForDisplay.push("Topic====> " + topic + "  Message====> " + payload);
   }
 
   publishSliderValue() {
@@ -96,11 +133,10 @@ export class AppComponent implements OnInit {
         }
       }
     });
-    console.log("slider value", this.sliderValue);
-    this.mqttClient.publish(this.subscruptionTopic, textToPublish);
+    this.mqttClient.publish(this.shadowUpdateTopic, textToPublish);
   }
 
   publishTextValue() {
-    this.mqttClient.publish(this.subscruptionTopic, this.iotTextValue);
+    this.mqttClient.publish(this.shadowUpdateTopic, this.iotTextValue);
   }
 }
