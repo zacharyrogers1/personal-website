@@ -42,7 +42,7 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     this.localConfig.region = 'us-west-2';
     this.localConfig.credentials = new CognitoIdentityCredentials({
-      IdentityPoolId: "us-west-2:ce91c067-fcf7-4681-837c-625d29244057"
+      IdentityPoolId: "us-west-2:e070912f-f98b-45a5-9279-934da23a723d"
     });
     this.mqttClient = new device(this.deviceOptions);
     this.cognitoIdentity = new CognitoIdentity();
