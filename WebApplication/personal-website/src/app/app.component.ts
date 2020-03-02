@@ -76,12 +76,12 @@ export class AppComponent implements OnInit {
     });
 
     this.deviceConnectionListener = this.deviceConnectionSubject.subscribe((isConnected) => {
-      console.log('this is is connected', isConnected);
+      console.log('this is isConnected', isConnected);
       if (isConnected === true) {
         this.deviceConnectionStatus.statusText = 'Device is Connected!';
         this.deviceConnectionStatus.color = 'primary'
       }
-      else {
+      if (isConnected === false) {
         this.deviceConnectionStatus.statusText = 'Device is Disconnected!';
         this.deviceConnectionStatus.color = 'warn'
       }
@@ -115,12 +115,14 @@ export class AppComponent implements OnInit {
       return
     }
 
-    if(topic === this.shadowUpdateTopic){
+    if (topic === this.shadowUpdateTopic) {
       const objectpayload = JSON.parse(payload);
-      console.log('this is objectpayload', objectpayload.state.reported.connected);
-      if(objectpayload.state.reported.connected === false) {
-        this.deviceConnectionSubject.next(objectpayload.state.reported.connected)
+      try {
+        if (objectpayload.state.reported.connected === false || objectpayload.state.reported.connected === true) {
+          this.deviceConnectionSubject.next(objectpayload.state.reported.connected)
+        }
       }
+      catch (error) { }
     }
     this.mqttMessagesForDisplay.push("Topic====> " + topic + "  Message====> " + payload);
   }
