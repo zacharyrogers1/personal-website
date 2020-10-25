@@ -21,7 +21,7 @@ provider "aws" {
 
 //This module needs a second provider block because it creates the SSL certificates and Cloudfront only accepts certs from us-east-1
 module "CertificatesAndDomains" {
-  source = "../../modules/CertificatesAndDomains"
+  source = "../../../modules/CertificatesAndDomains"
   providers = {
     aws = "aws.useast1"
   }
@@ -29,7 +29,7 @@ module "CertificatesAndDomains" {
 }
 
 module "CloudFrontDistribution" {
-  source = "../../modules/CloudFrontDistribution"
+  source = "../../../modules/CloudFrontDistribution"
   acm_certificate_arn = module.CertificatesAndDomains.acm_certificate_arn
   s3_bucket_name = var.s3_bucket_name
   website_domain_name = var.website_domain_name
