@@ -1,7 +1,7 @@
 #---------------------------------------------Identity Pool---------------------------------
 data "aws_iam_policy" "managedPolicyIotDataReader" {
   arn = "arn:aws:iam::aws:policy/AWSIoTDataAccess"
-# The arn of Managed AWS policies are fixed and unchanging.
+  # The arn of Managed AWS policies are fixed and unchanging.
 }
 
 resource "aws_cognito_identity_pool" "identityPool" {
@@ -92,9 +92,62 @@ resource "aws_cognito_user_pool" "pool" {
     invite_message_template {
       email_message = "Welcome to zacharytrogers.com. Your username is {username} and your temporary password is {####}"
       email_subject = "Welcome to zacharytrogers.com!"
-      sms_message = "Welcome to zacharytrogers.com. Your username is {username} and your temporary password is {####}"
+      sms_message   = "Welcome to zacharytrogers.com. Your username is {username} and your temporary password is {####}"
     }
   }
 
-  
+  sms_configuration {
+    external_id    = "personalWebsiteUserPool"
+    sns_caller_arn = aws_iam_role.cognitoAssumesThisRoleToDoActions.arn
+  }
+
+
+}
+
+resource "aws_iam_role" "cognitoAssumesThisRoleToDoActions" {
+  name               = "cognitoUserPoolRole"
+  assume_role_policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Action": "sts:AssumeRole",
+      "Principal": {
+        "Service": "cognito-idp.amazonaws.com"
+      },
+      "Effect": "Allow",
+      "Condition": {
+        "StringEquals": {
+          "sts:ExternalId": "personalWebsiteUserPool"
+        }
+      }
+    }
+  ]
+}
+EOF
+}
+
+resource "aws_iam_policy" "sendSmsTexts" {
+  name = "allowEntityToSendSMSTexts"
+  policy = <<EOF
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "sns:publish"
+            ],
+            "Resource": [
+                "*"
+            ]
+        }
+    ]
+}
+EOF
+}
+
+resource "aws_iam_role_policy_attachment" "cognitoCanSendTexts" {
+  role       = aws_iam_role.cognitoAssumesThisRoleToDoActions.name
+  policy_arn = aws_iam_policy.sendSmsTexts.arn
 }
