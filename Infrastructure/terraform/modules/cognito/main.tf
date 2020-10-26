@@ -7,6 +7,11 @@ data "aws_iam_policy" "managedPolicyIotDataReader" {
 resource "aws_cognito_identity_pool" "identityPool" {
   identity_pool_name               = "personalWebsiteIdentityPool"
   allow_unauthenticated_identities = true
+  cognito_identity_providers {
+    client_id = aws_cognito_user_pool_client.webClient.id
+    provider_name = aws_cognito_user_pool.pool.endpoint
+    server_side_token_check = false
+  }
 }
 
 resource "aws_iam_role" "unauthenticated" {
