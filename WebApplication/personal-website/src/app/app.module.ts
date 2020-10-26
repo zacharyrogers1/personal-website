@@ -11,8 +11,13 @@ import {MatInputModule} from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatChipsModule} from '@angular/material/chips';
+import Amplify from 'aws-amplify';
+import { environment } from 'src/environments/environment';
+import { AmplifyUIAngularModule } from '@aws-amplify/ui-angular';
 
+console.log("I am the aws stuff", environment.awsConfig)
 
+Amplify.configure(environment.awsConfig);
 
 @NgModule({
   declarations: [
@@ -28,7 +33,8 @@ import {MatChipsModule} from '@angular/material/chips';
     MatInputModule,
     FormsModule,
     MatProgressSpinnerModule,
-    MatChipsModule
+    MatChipsModule,
+    AmplifyUIAngularModule
   ],
   providers: [],
   bootstrap: [AppComponent]

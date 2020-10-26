@@ -151,3 +151,9 @@ resource "aws_iam_role_policy_attachment" "cognitoCanSendTexts" {
   role       = aws_iam_role.cognitoAssumesThisRoleToDoActions.name
   policy_arn = aws_iam_policy.sendSmsTexts.arn
 }
+
+resource "aws_cognito_user_pool_client" "webClient" {
+  name = "personalWebsiteClient"
+
+  user_pool_id = aws_cognito_user_pool.pool.id
+}
