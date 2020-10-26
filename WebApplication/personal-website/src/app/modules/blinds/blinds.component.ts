@@ -4,7 +4,6 @@ import { CognitoIdentity, config, CognitoIdentityCredentials, AWSError } from 'a
 import { GlobalConfigInstance } from 'aws-sdk/lib/config';
 import { v4 } from 'uuid';
 import { Subject, Subscription } from 'rxjs';
-import { Auth, Hub } from 'aws-amplify';
 
 @Component({
   selector: 'blinds',
@@ -20,7 +19,7 @@ export class BlindsComponent implements OnInit {
   showThumbLabel: boolean = true;
   localConfig: GlobalConfigInstance = config;
   mqttClient: device;
-  cognitoIdentity;
+  cognitoIdentity: CognitoIdentity;
   mqttMessagesForDisplay = [];
   clientIdUuid: string = v4();
   deviceOptions: DeviceOptions = {
@@ -57,7 +56,7 @@ export class BlindsComponent implements OnInit {
     this.cognitoIdentity = new CognitoIdentity();
     (<CognitoIdentityCredentials>this.localConfig.credentials).get((err: AWSError) => {
       if (!err) {
-        var params = {
+        var params: CognitoIdentity.GetCredentialsForIdentityInput = {
           IdentityId: (<CognitoIdentityCredentials>this.localConfig.credentials).identityId
         };
         this.cognitoIdentity.getCredentialsForIdentity(params, (err, data) => {
