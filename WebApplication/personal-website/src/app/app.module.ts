@@ -14,8 +14,8 @@ import {MatChipsModule} from '@angular/material/chips';
 import Amplify from 'aws-amplify';
 import { environment } from 'src/environments/environment';
 import { AmplifyUIAngularModule } from '@aws-amplify/ui-angular';
-
-console.log("I am the aws stuff", environment.awsConfig)
+import { BlindsModule } from './modules/blinds/blinds.module';
+import { AuthService } from './services/auth.service';
 
 Amplify.configure(environment.awsConfig);
 
@@ -27,14 +27,8 @@ Amplify.configure(environment.awsConfig);
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    MatButtonModule,
-    MatSliderModule,
-    MatFormFieldModule,
-    MatInputModule,
-    FormsModule,
-    MatProgressSpinnerModule,
-    MatChipsModule,
-    AmplifyUIAngularModule
+    AmplifyUIAngularModule,
+    BlindsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

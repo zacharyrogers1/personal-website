@@ -4,9 +4,10 @@ import { CognitoIdentity, config, CognitoIdentityCredentials, AWSError } from 'a
 import { GlobalConfigInstance } from 'aws-sdk/lib/config';
 import { v4 } from 'uuid';
 import { Subject, Subscription } from 'rxjs';
+import { Auth, Hub } from 'aws-amplify';
 
 @Component({
-  selector: 'app-blinds',
+  selector: 'blinds',
   templateUrl: './blinds.component.html',
   styleUrls: ['./blinds.component.scss']
 })
@@ -43,6 +44,7 @@ export class BlindsComponent implements OnInit {
   shadowStateDocument;
   deviceConnectionSubject: Subject<boolean> = new Subject<boolean>();
   deviceConnectionListener: Subscription;
+
 
   constructor() { }
 
@@ -125,6 +127,7 @@ export class BlindsComponent implements OnInit {
       catch (error) { }
     }
     this.mqttMessagesForDisplay.push("Topic====> " + topic + "  Message====> " + payload);
+    
   }
 
   publishSliderValue() {

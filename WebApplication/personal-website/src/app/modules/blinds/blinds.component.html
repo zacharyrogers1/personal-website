@@ -1,1 +1,30 @@
-<p>blinds works!</p>
+<div>
+    <h1>SPACING!</h1>
+</div>
+<div>
+    <mat-slider [max]="sliderMax" [min]="sliderMin" [tickInterval]="sliderTickInterval" [thumbLabel]="showThumbLabel"
+        [(ngModel)]="sliderValue"></mat-slider>
+
+    <button mat-raised-button (click)="publishSliderValue()">Send IoT Slider Value</button>
+</div>
+
+<mat-form-field appearance="fill">
+    <mat-label>IoT string</mat-label>
+    <input matInput [(ngModel)]="iotTextValue">
+</mat-form-field>
+<button mat-raised-button (click)="publishTextValue()">Send IoT Text</button>
+
+<mat-chip-list class="mat-chip-list-stacked" aria-label="Color selection">
+    <mat-chip selected [color]="clientConnectionStatus.color">
+        {{clientConnectionStatus.statusText}}
+    </mat-chip>
+</mat-chip-list>
+
+<mat-chip-list class="mat-chip-list-stacked" aria-label="Color selection">
+    <mat-chip selected [color]="deviceConnectionStatus.color">
+        {{deviceConnectionStatus.statusText}}
+    </mat-chip>
+</mat-chip-list>
+
+<!-- <p>{{hello}}</p> -->
+<li *ngFor="let obj of mqttMessagesForDisplay">{{obj}}</li>
