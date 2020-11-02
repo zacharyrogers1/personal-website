@@ -4,6 +4,7 @@ import { CognitoIdentity, config, CognitoIdentityCredentials, AWSError } from 'a
 import { GlobalConfigInstance } from 'aws-sdk/lib/config';
 import { v4 } from 'uuid';
 import { Subject, Subscription } from 'rxjs';
+import { MqttService } from 'src/app/services/mqtt.service';
 
 @Component({
   selector: 'blinds',
@@ -45,57 +46,14 @@ export class BlindsComponent implements OnInit {
   deviceConnectionListener: Subscription;
 
 
-  constructor() { }
+  constructor(
+    private mqttService: MqttService,
+  ) { 
+
+  }
 
   ngOnInit() {
-    this.localConfig.region = 'us-west-2';
-    this.localConfig.credentials = new CognitoIdentityCredentials({
-      IdentityPoolId: "us-west-2:e070912f-f98b-45a5-9279-934da23a723d"
-    });
-    this.mqttClient = new device(this.deviceOptions);
-    this.cognitoIdentity = new CognitoIdentity();
-    (<CognitoIdentityCredentials>this.localConfig.credentials).get((err: AWSError) => {
-      if (!err) {
-        var params: CognitoIdentity.GetCredentialsForIdentityInput = {
-          IdentityId: (<CognitoIdentityCredentials>this.localConfig.credentials).identityId
-        };
-        this.cognitoIdentity.getCredentialsForIdentity(params, (err, data) => {
-          if (!err) {
-            this.mqttClient.updateWebSocketCredentials(data.Credentials.AccessKeyId,
-              data.Credentials.SecretKey,
-              data.Credentials.SessionToken,
-              undefined);
-          } else {
-            console.log('error retrieving credentials: ' + err);
-            alert('error retrieving credentials: ' + err);
-          }
-        });
-      } else {
-        console.log('error retrieving identity:' + err);
-        alert('error retrieving identity: ' + err);
-      }
-    });
 
-    this.deviceConnectionListener = this.deviceConnectionSubject.subscribe((isConnected) => {
-      console.log('this is isConnected', isConnected);
-      if (isConnected === true) {
-        this.deviceConnectionStatus.statusText = 'Device is Connected!';
-        this.deviceConnectionStatus.color = 'primary'
-      }
-      if (isConnected === false) {
-        this.deviceConnectionStatus.statusText = 'Device is Disconnected!';
-        this.deviceConnectionStatus.color = 'warn'
-      }
-    });
-
-    this.mqttClient.subscribe(this.shadowUpdateTopic);
-    this.mqttClient.subscribe(this.getShadowTopic);
-    this.mqttClient.subscribe(this.getShadowTopicAccepted);
-    this.mqttClient.subscribe(this.shadowDeltaTopic);
-    this.mqttClient.on('message', this.handleMqttMessage);
-    this.mqttClient.on('connect', this.clientConnect);
-    this.mqttClient.on('offline', this.clientDisconnect);
-    this.mqttClient.publish(this.getShadowTopic, "{}");
   }
 
   clientConnect = () => {
@@ -126,7 +84,7 @@ export class BlindsComponent implements OnInit {
       catch (error) { }
     }
     this.mqttMessagesForDisplay.push("Topic====> " + topic + "  Message====> " + payload);
-    
+
   }
 
   publishSliderValue() {
