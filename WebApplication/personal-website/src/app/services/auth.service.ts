@@ -21,11 +21,9 @@ export class AuthService {
     // })
     return Auth.currentCredentials();
   }
+  //Look at this PubSub model from amplify! https://docs.amplify.aws/lib/pubsub/getting-started/q/platform/js
 
   async getCurrentSession():Promise<CognitoUserSession> {
     return Auth.currentSession();
   }
 }
-
-
-// Module '"../../../node_modules/aws-amplify/lib-esm"' has no exported member 'ICredentials'. Did you mean to use 'import ICredentials from "../../../node_modules/aws-amplify/lib-esm"'

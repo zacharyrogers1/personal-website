@@ -16,8 +16,13 @@ import { environment } from 'src/environments/environment';
 import { AmplifyUIAngularModule } from '@aws-amplify/ui-angular';
 import { BlindsModule } from './modules/blinds/blinds.module';
 import { AuthService } from './services/auth.service';
+import { AWSIoTProvider } from "@aws-amplify/pubsub/lib/Providers";
 
 Amplify.configure(environment.awsConfig);
+Amplify.addPluggable(new AWSIoTProvider({
+  aws_pubsub_region: environment.awsConfig.Auth.region,
+  aws_pubsub_endpoint: `wss://${environment.awsConfig.iot.endpoint}/mqtt`,
+}));
 
 @NgModule({
   declarations: [
