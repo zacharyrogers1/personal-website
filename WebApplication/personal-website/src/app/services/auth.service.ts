@@ -16,11 +16,9 @@ export class AuthService {
   }
 
   async getCurrentCognitoCredentials():Promise<ICredentials> {
-    // Auth.currentUserCredentials().then((data)=> {
-    //   console.log("currentUserCredentials", data)
-    // })
     return Auth.currentCredentials();
   }
+  
   //Look at this PubSub model from amplify! https://docs.amplify.aws/lib/pubsub/getting-started/q/platform/js
 
   async getCurrentSession():Promise<CognitoUserSession> {
