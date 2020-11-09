@@ -15,8 +15,6 @@ export class AuthService {
     return Auth.currentCredentials();
   }
 
-  //Look at this PubSub model from amplify! https://docs.amplify.aws/lib/pubsub/getting-started/q/platform/js
-
   async getCurrentSession():Promise<CognitoUserSession> {
     return Auth.currentSession();
   }

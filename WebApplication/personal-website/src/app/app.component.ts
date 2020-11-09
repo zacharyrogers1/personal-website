@@ -18,13 +18,17 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.mqttService.addPluggable();
+    this.createListenerToRemoveIoTPluginOnSignInAndSignOut();
+  }
+
+  private createListenerToRemoveIoTPluginOnSignInAndSignOut() {
     Hub.listen('auth', (data) => {
-      if(data?.payload?.event === 'signOut' || data?.payload?.event === 'signIn') {
-        this.mqttService.removePluggables()
+      if (data?.payload?.event === 'signOut' || data?.payload?.event === 'signIn') {
+        this.mqttService.removePluggables();
         this.mqttService.addPluggable();
       }
-      console.log("Here is information on auth", data)
-    })
-    
+      console.log("Here is information on auth", data);
+    });
   }
 }
