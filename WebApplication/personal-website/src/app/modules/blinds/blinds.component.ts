@@ -47,5 +47,8 @@ export class BlindsComponent implements OnInit {
     this.mqttService.removePluggables()
   }
 
+  printPubSub() {
+    this.mqttService.printPubSub();
+  }
 }
 

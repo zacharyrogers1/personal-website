@@ -41,4 +41,8 @@ export class MqttService {
     console.log("pluggables were removed")
   }
 
+  printPubSub() {
+    console.log("Current AmplifyPubSub", Amplify.PubSub)
+  }
+
 }
