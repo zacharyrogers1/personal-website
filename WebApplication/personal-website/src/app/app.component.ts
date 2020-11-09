@@ -19,7 +19,7 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     Hub.listen('auth', (data) => {
-      if(data.payload.event === 'signOut' || data.payload.event === 'signIn') {
+      if(data?.payload?.event === 'signOut' || data?.payload?.event === 'signIn') {
         this.mqttService.removePluggables()
         this.mqttService.addPluggable();
       }
