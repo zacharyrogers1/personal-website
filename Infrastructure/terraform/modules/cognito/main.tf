@@ -40,10 +40,6 @@ resource "aws_iam_role" "unauthenticated" {
 EOF
 }
 
-resource "aws_iam_role_policy_attachment" "managedIotDataReaderAttachmentUnauth" {
-  role       = aws_iam_role.unauthenticated.name
-  policy_arn = data.aws_iam_policy.managedPolicyIotDataReader.arn
-}
 
 resource "aws_iam_role" "authenticated" {
   name               = "personalWebsiteCognitoAuthRole"
