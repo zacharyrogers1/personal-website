@@ -26,10 +26,7 @@ export class MqttService {
   }
 
   async addPluggable() {
-    const credentials: ICredentials = await this.authService.getCurrentCognitoCredentials();
-    console.log("All credentials stuff", credentials)
     Amplify.addPluggable(new AWSIoTProvider({
-      ...credentials,
       aws_pubsub_region: environment.awsConfig.Auth.region,
       aws_pubsub_endpoint: `wss://${environment.awsConfig.iot.endpoint}/mqtt`,
     }));

@@ -9,16 +9,12 @@ import { ICredentials }  from "aws-amplify/lib-esm/Common/types/types"
 })
 export class AuthService {
 
-  constructor() { 
-    Hub.listen('auth', (data) => {
-      console.log("Here is information on auth", data)
-    })
-  }
+  constructor() { }
 
   async getCurrentCognitoCredentials():Promise<ICredentials> {
     return Auth.currentCredentials();
   }
-  
+
   //Look at this PubSub model from amplify! https://docs.amplify.aws/lib/pubsub/getting-started/q/platform/js
 
   async getCurrentSession():Promise<CognitoUserSession> {
