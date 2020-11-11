@@ -8,6 +8,8 @@ import Amplify from 'aws-amplify';
 import { environment } from 'src/environments/environment';
 import { AmplifyUIAngularModule } from '@aws-amplify/ui-angular';
 import { BlindsModule } from './modules/blinds/blinds.module';
+import { DefaultComponent } from './modules/default/default.component';
+import { DefaultModule } from './modules/default/default.module';
 
 Amplify.configure(environment.awsConfig);
 
@@ -20,7 +22,8 @@ Amplify.configure(environment.awsConfig);
     AppRoutingModule,
     BrowserAnimationsModule,
     AmplifyUIAngularModule,
-    BlindsModule
+    BlindsModule,
+    DefaultModule
   ],
   providers: [],
   bootstrap: [AppComponent]
