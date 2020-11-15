@@ -1,0 +1,15 @@
+$iconWidth: 56px;
+.sidenav-toggle {
+    padding: 0;
+    margin: 8px;
+    min-width: $iconWidth;
+
+    mat-icon {
+        font-size: 30;
+        height: $iconWidth;
+        width: $iconWidth;
+        line-height: $iconWidth;
+        color:white;
+    }
+    
+}

@@ -9,7 +9,11 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSliderModule } from '@angular/material/slider';
 import { MatIconModule } from "@angular/material/icon";
 import { MatCheckboxModule } from "@angular/material/checkbox";
-import {MatSidenavModule} from '@angular/material/sidenav'
+import {MatToolbarModule} from '@angular/material/toolbar';
+import {MatSidenavModule} from '@angular/material/sidenav';
+import {MatListModule} from '@angular/material/list';
+import {MatCardModule} from '@angular/material/card';
+
 
 
 
@@ -17,6 +21,10 @@ import {MatSidenavModule} from '@angular/material/sidenav'
   declarations: [],
   imports: [],
   exports: [
+    MatSidenavModule,
+    MatCardModule,
+    MatToolbarModule,
+    MatListModule,
     MatSidenavModule,
     CommonModule,
     MatButtonModule,
