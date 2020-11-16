@@ -17,8 +17,7 @@ Amplify.configure(environment.awsConfig);
 const routes: Routes = [
   {path: 'demo', loadChildren: ()=> import('./modules/demo/demo.module').then(m => m.DemoModule)},
   {path: 'signIn', loadChildren: ()=> import('./modules/sign-in/sign-in.module').then(m => m.SignInModule)},
-  {path: 'home', loadChildren: ()=> import('./modules/main/main.module').then(m => m.MainModule)},
-  {path: '', redirectTo: 'home', pathMatch: 'full'},
+  {path: '', loadChildren: ()=> import('./modules/main/main.module').then(m => m.MainModule)},
   {path: '**', loadChildren: 'home'}
 ];
 
