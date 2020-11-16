@@ -1,0 +1,10 @@
+<div *ngIf="authenticated; else signIn" ngbDropdown class="d-inline-block">
+    <button type='button' class='btn btn-outline-info' id='signOutDropdown' ngbDropdownToggle>Hello, {{username}}</button>
+    <div ngbDropdownMenu aria-labelledby='signOutDropdown'>
+        <button ngbDropdownItem (click)="signOut()">Sign Out</button>
+    </div>
+</div>
+
+<ng-template #signIn>
+    <button mat-button (click)="navigateToSignIn()">Sign In</button>
+</ng-template>

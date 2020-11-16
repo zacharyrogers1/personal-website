@@ -6,6 +6,9 @@ import { MainContentComponent } from './components/main-content/main-content.com
 import { SideNavComponent } from './components/side-nav/side-nav.component';
 import { MaterialModule } from 'src/app/common/material/material.module';
 import { RouterModule, Routes } from '@angular/router';
+import { AmplifyUIAngularModule } from '@aws-amplify/ui-angular';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { SignInStatusComponent } from './components/sign-in-status/sign-in-status.component';
 
 
 const routes: Routes = [
@@ -18,11 +21,13 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  declarations: [HorseWaterAppComponent, ToolbarComponent, MainContentComponent, SideNavComponent],
+  declarations: [HorseWaterAppComponent, ToolbarComponent, MainContentComponent, SideNavComponent, SignInStatusComponent],
   imports: [
     CommonModule,
     MaterialModule,
-    RouterModule.forChild(routes)
+    AmplifyUIAngularModule,
+    RouterModule.forChild(routes),
+    NgbModule
   ]
 })
 export class HorseWaterModule { }

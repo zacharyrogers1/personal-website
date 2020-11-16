@@ -16,6 +16,15 @@ export class AuthService {
   }
 
   async getCurrentSession():Promise<CognitoUserSession> {
+   
     return Auth.currentSession();
+  }
+
+  async getCurrentUserInfo():Promise<any> {
+    return Auth.currentUserInfo();
+  }
+
+  async signOut(): Promise<any> {
+    return Auth.signOut()
   }
 }
