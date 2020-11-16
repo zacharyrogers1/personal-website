@@ -7,6 +7,9 @@ export const environment = {
       region: 'us-east-1',
       userPoolId: 'us-east-1_bRAPsGeo2',
       userPoolWebClientId: '7isv2q0ebte5e73ri63ih408rl'
+    },
+    iot: {
+      endpoint: 'a1n8ytbh0zio90-ats.iot.us-east-1.amazonaws.com'
     }
   }
 };
