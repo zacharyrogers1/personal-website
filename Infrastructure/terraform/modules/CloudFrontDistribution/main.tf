@@ -66,7 +66,7 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
   enabled             = true
   is_ipv6_enabled     = true
   default_root_object = "index.html"
-  aliases = ["${var.website_domain_name}"]
+  aliases = [var.website_domain_name]
 
 
   default_cache_behavior {
@@ -107,6 +107,21 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
     minimum_protocol_version = "TLSv1"
     ssl_support_method       = "sni-only"
   }
+
+#custom error responses for Angular. When you refresh the page at www.example.com/auth redirect the request to the index.html page
+  custom_error_response {
+    error_caching_min_ttl = "300"
+    error_code            = "400"
+    response_code         = "200"
+    response_page_path    = "/index.html"
+  }
+
+  custom_error_response {
+    error_caching_min_ttl = "300"
+    error_code            = "403"
+    response_code         = "200"
+    response_page_path    = "/index.html"
+  }
 }
 
 resource "aws_cloudfront_origin_access_identity" "origin_access_identity" {
@@ -134,8 +149,8 @@ resource "aws_route53_record" "route53_alias_record" {
     "aws_cloudfront_distribution.s3_distribution",
   ]
 
-  zone_id = "${data.aws_route53_zone.zone.zone_id}"
-  name    = "${var.website_domain_name}"
+  zone_id = data.aws_route53_zone.zone.zone_id
+  name    = var.website_domain_name
   type    = "A"
   //type A is a IPV4 record
 
