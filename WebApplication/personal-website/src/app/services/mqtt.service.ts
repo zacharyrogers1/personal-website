@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import Amplify from 'aws-amplify';
 import { environment } from 'src/environments/environment';
-import { AWSIoTProvider } from "@aws-amplify/pubsub/lib/Providers";
+import { AWSIoTProvider } from "@aws-amplify/pubsub/lib/Providers/AWSIotProvider";
 
 @Injectable({
   providedIn: 'root'
