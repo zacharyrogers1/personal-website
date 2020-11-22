@@ -1,5 +1,5 @@
 <div *ngIf="authenticated; else signIn" ngbDropdown class="d-inline-block">
-    <button type='button' class='btn btn-outline-info' id='signOutDropdown' ngbDropdownToggle>Hello, {{username}}</button>
+    <button mat-raised-button type='button' id='signOutDropdown' ngbDropdownToggle>Hello, {{username}}</button>
     <div ngbDropdownMenu aria-labelledby='signOutDropdown'>
         <button ngbDropdownItem (click)="signOut()">Sign Out</button>
     </div>
