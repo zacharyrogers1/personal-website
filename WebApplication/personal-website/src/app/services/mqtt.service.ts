@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import Amplify from 'aws-amplify';
+import Amplify, { PubSub } from 'aws-amplify';
 import { environment } from 'src/environments/environment';
 import { AWSIoTProvider } from "@aws-amplify/pubsub/lib/Providers/AWSIotProvider";
 
@@ -19,12 +19,7 @@ export class MqttService {
       aws_pubsub_region: environment.awsConfig.Auth.region,
       aws_pubsub_endpoint: `wss://${environment.awsConfig.iot.endpoint}/mqtt`,
     }));
-    console.log("AmplifyPubsub", Amplify.PubSub)
-  }
-
-  removePluggables() {
-    Amplify.PubSub._pluggables = []
-    console.log("pluggables were removed")
+    console.log("AmplifyPubsub", Amplify.PubSub);
   }
 
   printPubSub() {
