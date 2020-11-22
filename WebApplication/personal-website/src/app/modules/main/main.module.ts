@@ -10,12 +10,16 @@ import { SideNavComponent } from './components/side-nav/side-nav.component';
 import { SignInStatusComponent } from './components/sign-in-status/sign-in-status.component';
 
 const routes: Routes = [
+  { path: '', redirectTo: 'home', pathMatch: 'full' },
   {
     path: '', component: SideNavComponent, children: [
-      { path: 'demo', loadChildren: () => import('../demo/demo.module').then(m => m.DemoModule) }
+      { path: 'home', loadChildren: () => import('../home/home.module').then(m => m.HomeModule) },
+      { path: 'demo', loadChildren: () => import('../demo/demo.module').then(m => m.DemoModule) },
+      { path: 'bio', loadChildren: () => import('../bio/bio.module').then(m => m.BioModule) },
+      { path: 'projectShowcase', loadChildren: () => import('../project-showcase/project-showcase.module').then(m => m.ProjectShowcaseModule) },
     ]
   },
-  { path: '**', redirectTo: 'demo' }
+  { path: '**', redirectTo: 'home' }
 ];
 
 

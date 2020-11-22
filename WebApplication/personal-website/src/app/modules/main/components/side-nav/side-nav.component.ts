@@ -7,9 +7,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SideNavComponent implements OnInit {
 
+  isSideNavOpen:boolean = false;
+
   constructor() { }
 
   ngOnInit(): void {
+  }
+
+  toggleSideNav() {
+    this.isSideNavOpen = !this.isSideNavOpen;
   }
 
 }

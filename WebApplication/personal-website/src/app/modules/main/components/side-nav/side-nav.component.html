@@ -1,20 +1,24 @@
 <mat-sidenav-container class="app-sidenav-container">
-    <mat-sidenav #sidenav class="app-sidenav mat-elevation-z10" mode="over">
+    <mat-sidenav #sidenav class="app-sidenav mat-elevation-z10" mode="over" [(opened)]="isSideNavOpen">
         <mat-toolbar class="matToolbar" color="primary">
             <span>Zachary T. Rogers</span>
         </mat-toolbar>
         <mat-nav-list>
             <mat-list-item>
+                <mat-icon matListIcon>home</mat-icon>
+                <a matLine [routerLink]="['home']" (click)="toggleSideNav()">Home</a>
+            </mat-list-item>
+            <mat-list-item>
                 <mat-icon matListIcon>work_outline</mat-icon>
-                <a matLine href="#">Project Showcase</a>
+                <a matLine [routerLink]="['projectShowcase']" (click)="toggleSideNav()">Project Showcase</a>
             </mat-list-item>
             <mat-list-item>
                 <mat-icon matListIcon>face</mat-icon>
-                <a matLine href="#">Bio</a>
+                <a matLine [routerLink]="['bio']" (click)="toggleSideNav()">Bio</a>
             </mat-list-item>
             <mat-list-item>
                 <mat-icon matListIcon>settings_remote</mat-icon>
-                <a matLine href="#">IoT Device</a>
+                <a matLine [routerLink]="['home']" (click)="toggleSideNav()">IoT Device</a>
             </mat-list-item>
         </mat-nav-list>
     </mat-sidenav>
