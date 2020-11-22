@@ -10,8 +10,12 @@ import { SideNavComponent } from './components/side-nav/side-nav.component';
 import { SignInStatusComponent } from './components/sign-in-status/sign-in-status.component';
 
 const routes: Routes = [
-  { path: '', component: SideNavComponent },
-  { path: '**', redirectTo: '' }
+  {
+    path: '', component: SideNavComponent, children: [
+      { path: 'demo', loadChildren: () => import('../demo/demo.module').then(m => m.DemoModule) }
+    ]
+  },
+  { path: '**', redirectTo: 'demo' }
 ];
 
 
