@@ -4,21 +4,21 @@
             <span>Zachary T. Rogers</span>
         </mat-toolbar>
         <mat-nav-list>
-            <mat-list-item>
+            <mat-list-item [routerLink]="['home']" (click)="toggleSideNav()">
                 <mat-icon matListIcon>home</mat-icon>
-                <a matLine [routerLink]="['home']" (click)="toggleSideNav()">Home</a>
+                <a matLine>Home</a>
             </mat-list-item>
-            <mat-list-item>
+            <mat-list-item [routerLink]="['projectShowcase']" (click)="toggleSideNav()">
                 <mat-icon matListIcon>work_outline</mat-icon>
-                <a matLine [routerLink]="['projectShowcase']" (click)="toggleSideNav()">Project Showcase</a>
+                <a matLine>Project Showcase</a>
             </mat-list-item>
-            <mat-list-item>
+            <mat-list-item [routerLink]="['bio']" (click)="toggleSideNav()">
                 <mat-icon matListIcon>face</mat-icon>
-                <a matLine [routerLink]="['bio']" (click)="toggleSideNav()">Bio</a>
+                <a matLine>Bio</a>
             </mat-list-item>
-            <mat-list-item>
+            <mat-list-item [routerLink]="['home']" (click)="toggleSideNav()">
                 <mat-icon matListIcon>settings_remote</mat-icon>
-                <a matLine [routerLink]="['home']" (click)="toggleSideNav()">IoT Device</a>
+                <a matLine>IoT Device</a>
             </mat-list-item>
         </mat-nav-list>
     </mat-sidenav>
