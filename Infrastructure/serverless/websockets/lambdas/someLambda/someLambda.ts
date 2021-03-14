@@ -13,8 +13,10 @@ export class SomeLambda {
         }
     }
 
-    public async executesomeLambda(event: APIGatewayProxyEvent) {
-        console.log('Here is the event :', event.requestContext);
+    public async executeSomeLambda(event: APIGatewayProxyEvent) {
+        console.log('Here is the event :', event);
+        const theRequest: ISomeLambdaRequest = JSON.parse(event.body)
+        console.log('Here is the request: ', theRequest);
         const { connectionId: connectionId, domainName: domainName, stage: stage } = event.requestContext;
 
         await sendMessageToClient(this._webSocket, {
@@ -29,5 +31,12 @@ export class SomeLambda {
     };
 }
 
+export interface ISomeLambdaRequest {
+    thing: string,
+    serialNumber: number
+}
+
+
+
 export const someLambdaHandler = new SomeLambda();
-export const executeSomeLambda = someLambdaHandler.executesomeLambda.bind(someLambdaHandler);
+export const executeSomeLambda = someLambdaHandler.executeSomeLambda.bind(someLambdaHandler);
