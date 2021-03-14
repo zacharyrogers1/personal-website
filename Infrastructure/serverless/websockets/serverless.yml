@@ -1,0 +1,49 @@
+service: webSockets
+
+custom:
+  webpack:
+    webpackConfig: ./webpack.config.js
+    includeModules: true
+
+plugins:
+  - serverless-webpack
+
+package:
+  individually: true
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+  stage: ${opt:stage, 'development'}
+  region: ${opt:region, 'us-east-1'}
+  stackName: ${self:service}-${self:provider.stage}
+  timeout: 29
+  apiGateway:
+    shouldStartNameWithService: true
+      
+functions:
+  WebsocketConnect:
+    handler: functions/handler.executeConnect
+    name: '${self:service}-WebsocketConnect'
+    events:
+      - websocket:
+          route: $connect
+  WebsocketDisconnect:
+    handler: functions/handler.executeDisconnect
+    name: '${self:service}-WebsocketDisconnect'
+    events:
+      - websocket:
+          route: $disconnect
+  WebsocketDefault:
+    handler: functions/handler.executeDefault
+    name: '${self:service}-WebsocketDefault'
+    events:
+      - websocket:
+          route: $default
+  SomeLambda:
+    handler: functions/someLambda/someLambda.executeSomeLambda
+    name: '${self:service}-WebsocketSomeLambda'
+    events:
+      - websocket:
+          route: someLambda
+          
