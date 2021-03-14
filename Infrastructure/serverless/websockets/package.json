@@ -5,9 +5,9 @@
   "main": "handler.js",
   "scripts": {
     "test": "npm run coverage",
-    "coverage": "nyc -r text -r lcov -e .ts -x \"test/*.spec.ts\" npm run testOnly",
-    "testOnly": "npx ts-node node_modules/jasmine/bin/jasmine --config=jasmine.json",
-    "connectToWebSocket": "npx wscat -c wss://dp07fot7j6.execute-api.us-east-1.amazonaws.com/development"
+    "coverage": "nyc -r text -e .ts -x \"test/*.spec.ts\" npm run testOnly",
+    "testOnly": "ts-node node_modules/jasmine/bin/jasmine --config=jasmine.json",
+    "connectToWebSocket": "wscat -c wss://dp07fot7j6.execute-api.us-east-1.amazonaws.com/development"
   },
   "dependencies": {
     "source-map-support": "^0.5.10"
