@@ -1,6 +1,6 @@
 import { APIGatewayProxyEvent } from 'aws-lambda';
 import { ApiGatewayManagementApi } from 'aws-sdk';
-import { executeSend } from '../handler';
+import { executeSend } from '../../sharedFunctions/websocketCommunicationHelper';
 
 export class SomeLambda {
     private _webSocket: ApiGatewayManagementApi;

@@ -23,25 +23,25 @@ provider:
       
 functions:
   WebsocketConnect:
-    handler: functions/handler.executeConnect
+    handler: lambdas/connect/connect.executeConnect
     name: '${self:service}-WebsocketConnect'
     events:
       - websocket:
           route: $connect
   WebsocketDisconnect:
-    handler: functions/handler.executeDisconnect
+    handler: lambdas/disconnect/disconnect.executeDisconnect
     name: '${self:service}-WebsocketDisconnect'
     events:
       - websocket:
           route: $disconnect
   WebsocketDefault:
-    handler: functions/handler.executeDefault
+    handler: lambdas/default/default.executeDefault
     name: '${self:service}-WebsocketDefault'
     events:
       - websocket:
           route: $default
   SomeLambda:
-    handler: functions/someLambda/someLambda.executeSomeLambda
+    handler: lambdas/someLambda/someLambda.executeSomeLambda
     name: '${self:service}-WebsocketSomeLambda'
     events:
       - websocket:
