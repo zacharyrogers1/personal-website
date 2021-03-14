@@ -1,6 +1,6 @@
 import { APIGatewayProxyEvent } from 'aws-lambda';
 import { ApiGatewayManagementApi } from 'aws-sdk';
-import { executeSend } from '../../sharedFunctions/websocketCommunicationHelper';
+import { sendMessageToClient } from '../../sharedFunctions/websocketCommunicationHelper';
 
 export class SomeLambda {
     private _webSocket: ApiGatewayManagementApi;
@@ -17,7 +17,7 @@ export class SomeLambda {
         console.log('Here is the event :', event.requestContext);
         const { connectionId: connectionId, domainName: domainName, stage: stage } = event.requestContext;
 
-        await executeSend(this._webSocket, {
+        await sendMessageToClient(this._webSocket, {
             domainName,
             stage,
             connectionId,

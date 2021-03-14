@@ -1,10 +1,10 @@
 import { ApiGatewayManagementApi } from "aws-sdk";
-import { executeSend } from "../../sharedFunctions/websocketCommunicationHelper";
+import { sendMessageToClient } from "../../sharedFunctions/websocketCommunicationHelper";
 
 export const executeDefault = async (event) => {
     console.log('default event', event);
     const { connectionId: connectionId, domainName: domainName, stage: stage } = event.requestContext;
-    await executeSend(new ApiGatewayManagementApi(), {
+    await sendMessageToClient(new ApiGatewayManagementApi(), {
         domainName,
         stage,
         connectionId,
