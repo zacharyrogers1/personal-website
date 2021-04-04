@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from 'src/app/services/auth.service';
 import { MqttService } from 'src/app/services/mqtt.service';
 import { AWSIoTProvider } from "@aws-amplify/pubsub/lib/Providers/AWSIotProvider";
 import { FormControl, FormGroup, Validators } from '@angular/forms';
@@ -32,22 +31,30 @@ export class LightArrayComponent implements OnInit {
     })
   });
 
+  chasingLightsColor = 'rgb(0,0,0)'
+  pingPongColor = 'rgb(0,0,0)'
 
   constructor(
     private mqttService: MqttService,
   ) { }
 
-  async ngOnInit() {
+ ngOnInit() {
 
     this.mqttService.getDesiredState('stringLights').subscribe((stateDoc: ILightArrayState) => {
       console.log('component state doc: ', stateDoc)
       this.lightArrayFormGroup.setValue(stateDoc);
+
+      const chasingLightsColor = stateDoc.animations.chasingLights.color
+      this.chasingLightsColor = `rgb(${chasingLightsColor[0]}, ${chasingLightsColor[1]}, ${chasingLightsColor[2]})`
+
+      const pingPongColor = stateDoc.animations.pingPong.color
+      this.pingPongColor = `rgb(${pingPongColor[0]}, ${pingPongColor[1]}, ${pingPongColor[2]})`
     });
 
     this.lightArrayFormGroup.valueChanges.subscribe((desiredState: ILightArrayState) => {
       console.log('Value of lightArrayFormGroup: ', desiredState)
       this.updateDesiredState(desiredState)
-    })
+    });
 
   }
 
@@ -62,6 +69,28 @@ export class LightArrayComponent implements OnInit {
     this.mqttService.publishChangeToState(change)
   }
 
+  colorChange(event: IColorChangeEvent, animationToApply:string){
+    const color = this.parseRgbColorFromString(event.color);
+    this.lightArrayFormGroup.get(`animations.${animationToApply}.color`).setValue(color)
+  }
+
+  parseRgbColorFromString(rgb:string):RgbColor{
+    const rgbList:string[] = rgb.substring(4, rgb.length-1)
+    .replace(/ /g, '')
+    .split(',');
+
+    const numberList = rgbList.map((colorString:string) => {
+      return parseInt(colorString)
+    })
+
+    return numberList as RgbColor
+  }
+
+}
+
+interface IColorChangeEvent {
+  slider: string,
+  color: string
 }
 
 //1. Define a static setup of each of the animations and what it needs for forms

@@ -8,8 +8,9 @@
                     </mat-radio-button>
                 </mat-card-title>
                 <mat-card-content>
-                    speed: <mat-slider min="0" max="1" step="0.1" thumbLabel="true" formControlName="speed"></mat-slider>
+                    Speed: <mat-slider min="0" max="1" step="0.1" thumbLabel="true" formControlName="speed"></mat-slider>
                     Number Of Lit Pixels: <mat-slider min="0" max="50" step="1" thumbLabel="true" formControlName="numLitPixels"></mat-slider>
+                    Color: <input [(colorPicker)]="chasingLightsColor" [style.background]="chasingLightsColor" cpOutputFormat="rgba" cpAlphaChannel="disabled" (cpSliderDragEnd)="colorChange($event, 'chasingLights')" />
                 </mat-card-content>
             </mat-card>
             <mat-card formGroupName="pingPong">
@@ -19,7 +20,8 @@
                     </mat-radio-button>
                 </mat-card-title>
                 <mat-card-content>
-                    speed: <mat-slider min="0" max="1" step="0.1" thumbLabel="true" formControlName="speed"></mat-slider>
+                    Speed: <mat-slider min="0" max="1" step="0.1" thumbLabel="true" formControlName="speed"></mat-slider>
+                    Color: <input [(colorPicker)]="pingPongColor" [style.background]="pingPongColor" cpOutputFormat="rgba" cpAlphaChannel="disabled" (cpSliderDragEnd)="colorChange($event, 'pingPong')" />
                 </mat-card-content>
             </mat-card>
             <mat-card formGroupName="unifiedRainbow">
@@ -29,7 +31,7 @@
                     </mat-radio-button>
                 </mat-card-title>
                 <mat-card-content>
-                    speed: <mat-slider min="0" max="1" step="0.1" thumbLabel="true" formControlName="speed"></mat-slider>
+                    Speed: <mat-slider min="0" max="1" step="0.1" thumbLabel="true" formControlName="speed"></mat-slider>
                 </mat-card-content>
             </mat-card>
             <mat-card formGroupName="countdown">
