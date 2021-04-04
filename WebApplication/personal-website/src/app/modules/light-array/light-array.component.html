@@ -1,8 +1,47 @@
-<form [formGroup]="lightArrayFormGroup">
-    <mat-card>
-        <h1>Light Array</h1>
-        <mat-radio-group formControlName='activeAnimation'>
-            <mat-radio-button *ngFor="let animation of animationOptions" [value]="animation.value">{{animation.viewValue}}</mat-radio-button>
-        </mat-radio-group>
-    </mat-card>
+<form class="example-container" [formGroup]="lightArrayFormGroup">
+    <mat-radio-group class="asCard" formControlName='activeAnimation'>
+        <div formGroupName="animations">
+            <mat-card formGroupName="chasingLights">
+                <mat-card-title>
+                    <mat-radio-button value="chasingLights">
+                        Chasing Lights
+                    </mat-radio-button>
+                </mat-card-title>
+                <mat-card-content>
+                    speed: <mat-slider min="0" max="1" step="0.1" thumbLabel="true" formControlName="speed"></mat-slider>
+                    Number Of Lit Pixels: <mat-slider min="0" max="50" step="1" thumbLabel="true" formControlName="numLitPixels"></mat-slider>
+                </mat-card-content>
+            </mat-card>
+            <mat-card formGroupName="pingPong">
+                <mat-card-title>
+                    <mat-radio-button value="pingPong">
+                        Ping Pong
+                    </mat-radio-button>
+                </mat-card-title>
+                <mat-card-content>
+                    speed: <mat-slider min="0" max="1" step="0.1" thumbLabel="true" formControlName="speed"></mat-slider>
+                </mat-card-content>
+            </mat-card>
+            <mat-card formGroupName="unifiedRainbow">
+                <mat-card-title>
+                    <mat-radio-button value="unifiedRainbow">
+                        Unified Rainbow
+                    </mat-radio-button>
+                </mat-card-title>
+                <mat-card-content>
+                    speed: <mat-slider min="0" max="1" step="0.1" thumbLabel="true" formControlName="speed"></mat-slider>
+                </mat-card-content>
+            </mat-card>
+            <mat-card formGroupName="countdown">
+                <mat-card-title>
+                    <mat-radio-button value="countdown">
+                        Countdown
+                    </mat-radio-button>
+                </mat-card-title>
+                <mat-card-content>
+                    Time In Seconds: <mat-slider min="0" max="30" step="0.1" thumbLabel="true" formControlName="timeInSeconds"></mat-slider>
+                </mat-card-content>
+            </mat-card>
+        </div>
+    </mat-radio-group>
 </form>

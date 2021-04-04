@@ -12,69 +12,63 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 export class LightArrayComponent implements OnInit {
 
   lightArrayFormGroup: FormGroup = new FormGroup({
-    activeAnimation: new FormControl('')
+    activeAnimation: new FormControl(''),
+    animations: new FormGroup({
+      chasingLights: new FormGroup({
+        speed: new FormControl(1),
+        numLitPixels: new FormControl(3),
+        color: new FormControl([0, 0, 255])
+      }),
+      pingPong: new FormGroup({
+        speed: new FormControl(1),
+        color: new FormControl([0, 0, 255])
+      }),
+      unifiedRainbow: new FormGroup({
+        speed: new FormControl(1),
+      }),
+      countdown: new FormGroup({
+        timeInSeconds: new FormControl(10),
+      })
+    })
   });
-  animationOptions = [
-    {
-      value: 'countdown',
-      viewValue: 'Countdown'
-    },
-    {
-      value: 'pingPong',
-      viewValue: 'Ping Pong'
-    },
-    {
-      value: 'unifiedRainbow',
-      viewValue: 'Unified Rainbow'
-    },
-    {
-      value: 'chasingLights',
-      viewValue: 'Chasing Lights'
-    },
-  ]
+
 
   constructor(
     private mqttService: MqttService,
-    private authService: AuthService
   ) { }
 
   async ngOnInit() {
-    // const isUserSignedIn = await this.authService.isCurrentUserLoggedIn();
-    // console.log(isUserSignedIn)
 
-    // const theSubscritpition = this.mqttService.subscribeToTopic('$aws/things/stringLights/shadow/update/delta')
-    // theSubscritpition.subscribe((value:IDeltaChanges) => {
-    //   console.log('Here are the update changes: ', value.value.state)
-    // });
-
-    this.mqttService.getDesiredState('stringLights').subscribe((stateDoc) => {
+    this.mqttService.getDesiredState('stringLights').subscribe((stateDoc: ILightArrayState) => {
       console.log('component state doc: ', stateDoc)
-      this.lightArrayFormGroup.controls.activeAnimation.setValue(stateDoc.activeAnimation)
+      this.lightArrayFormGroup.setValue(stateDoc);
     });
 
-    this.lightArrayFormGroup.controls.activeAnimation.valueChanges.subscribe((activeAnimation: string) => {
-      console.log('Changing the active Animation to: ', activeAnimation)
-      this.changeActiveAnimation(activeAnimation)
+    this.lightArrayFormGroup.valueChanges.subscribe((desiredState: ILightArrayState) => {
+      console.log('Value of lightArrayFormGroup: ', desiredState)
+      this.updateDesiredState(desiredState)
     })
 
   }
 
-  changeActiveAnimation(activeAnimation: string) {
+  updateDesiredState(desiredState: Object) {
     const change = {
       state:
       {
-        desired:
-          { activeAnimation: activeAnimation }
+        desired: desiredState
       }
     }
 
     this.mqttService.publishChangeToState(change)
-
   }
 
 }
 
-
+//1. Define a static setup of each of the animations and what it needs for forms
+//2. Create dynamic forms by grabbing the state of the data first then looping through and dynamically creating UI based on what animations types there are
+//    Each animation would be its own card. 
+//    For the animations if the property was "speed" then create a slider from 0 to 1
+//    For the animations if the property was "colors" then display a color picker for finding list of colors
 export interface IDeltaChanges {
   provider: AWSIoTProvider
   value: {
