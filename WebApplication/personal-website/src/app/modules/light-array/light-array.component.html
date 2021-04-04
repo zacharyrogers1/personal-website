@@ -1,0 +1,8 @@
+<form [formGroup]="lightArrayFormGroup">
+    <mat-card>
+        <h1>Light Array</h1>
+        <mat-radio-group formControlName='activeAnimation'>
+            <mat-radio-button *ngFor="let animation of animationOptions" [value]="animation.value">{{animation.viewValue}}</mat-radio-button>
+        </mat-radio-group>
+    </mat-card>
+</form>
