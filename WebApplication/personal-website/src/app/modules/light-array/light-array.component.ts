@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MqttService } from 'src/app/services/mqtt.service';
 import { AWSIoTProvider } from "@aws-amplify/pubsub/lib/Providers/AWSIotProvider";
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { LightArrayService, RgbColor } from './light-array.service';
 
 @Component({
   selector: 'app-light-array',
@@ -36,6 +37,7 @@ export class LightArrayComponent implements OnInit {
 
   constructor(
     private mqttService: MqttService,
+    private lightArrayService: LightArrayService
   ) { }
 
  ngOnInit() {
@@ -70,32 +72,20 @@ export class LightArrayComponent implements OnInit {
   }
 
   colorChange(event: IColorChangeEvent, animationToApply:string){
-    const color = this.parseRgbColorFromString(event.color);
+    const color = this.lightArrayService.parseRgbColorFromString(event.color);
     this.lightArrayFormGroup.get(`animations.${animationToApply}.color`).setValue(color)
-  }
-
-  parseRgbColorFromString(rgb:string):RgbColor{
-    const rgbList:string[] = rgb.substring(4, rgb.length-1)
-    .replace(/ /g, '')
-    .split(',');
-
-    const numberList = rgbList.map((colorString:string) => {
-      return parseInt(colorString)
-    })
-
-    return numberList as RgbColor
   }
 
 }
 
-interface IColorChangeEvent {
+export interface IColorChangeEvent {
   slider: string,
   color: string
 }
 
 //1. Define a static setup of each of the animations and what it needs for forms
 //2. Create dynamic forms by grabbing the state of the data first then looping through and dynamically creating UI based on what animations types there are
-//    Each animation would be its own card. 
+//    Each animation would be its own card.
 //    For the animations if the property was "speed" then create a slider from 0 to 1
 //    For the animations if the property was "colors" then display a color picker for finding list of colors
 export interface IDeltaChanges {
@@ -130,4 +120,3 @@ export interface ILightArrayState {
   }
 }
 
-export type RgbColor = [number, number, number]

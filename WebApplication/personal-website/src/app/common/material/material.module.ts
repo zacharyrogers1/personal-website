@@ -15,6 +15,7 @@ import {MatListModule} from '@angular/material/list';
 import {MatCardModule} from '@angular/material/card';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatRadioModule} from '@angular/material/radio'
+import { MatGridListModule } from '@angular/material/grid-list'
 
 
 
@@ -23,6 +24,7 @@ import {MatRadioModule} from '@angular/material/radio'
   declarations: [],
   imports: [],
   exports: [
+    MatGridListModule,
     MatSidenavModule,
     MatCardModule,
     MatToolbarModule,

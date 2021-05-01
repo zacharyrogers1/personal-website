@@ -4,6 +4,7 @@ import { LightArrayComponent } from './light-array.component';
 import { RouterModule, Routes } from '@angular/router';
 import { MaterialModule } from 'src/app/common/material/material.module';
 import { ColorPickerModule } from 'ngx-color-picker';
+import { PixelPaintComponent } from './pixel-paint/pixel-paint.component';
 
 const routes: Routes = [
   {
@@ -14,7 +15,7 @@ const routes: Routes = [
 
 
 @NgModule({
-  declarations: [LightArrayComponent],
+  declarations: [LightArrayComponent, PixelPaintComponent],
   imports: [
     CommonModule,
     MaterialModule,

@@ -1,0 +1,15 @@
+<mat-card>
+  <mat-card-title>
+    Pixel Paint
+    <input [(colorPicker)]="pixelPaintColor" [style.background]="pixelPaintColor" cpOutputFormat="rgba"
+      cpAlphaChannel="disabled" (cpSliderDragEnd)="colorChange($event)" />
+  </mat-card-title>
+  <mat-card-content>
+    <mat-grid-list [cols]="xAxisLength" rowHeight="1:1">
+      <mat-grid-tile *ngFor="let tile of tilesToDisplay;" [style.background]="tile.color"
+        (mouseover)="gridTileMouseOver(tile.index)">
+        {{tile.displayName}}
+      </mat-grid-tile>
+    </mat-grid-list>
+  </mat-card-content>
+</mat-card>
