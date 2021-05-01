@@ -5,7 +5,7 @@
       cpAlphaChannel="disabled" />
   </mat-card-title>
   <mat-card-content>
-    <mat-grid-list [cols]="xAxisLength" rowHeight="1:1" (mousedown)="mouseDown($event)">
+    <mat-grid-list [cols]="xAxisLength" rowHeight="1:1">
       <mat-grid-tile *ngFor="let tile of tilesToDisplay;" [style.background]="tile.color"
         (mouseover)="gridTileMouseOver(tile.index, false)" (click)="gridTileMouseOver(tile.index, true)">
       </mat-grid-tile>
