@@ -40,7 +40,7 @@ export class LightArrayComponent implements OnInit {
     private lightArrayService: LightArrayService
   ) { }
 
- ngOnInit() {
+  ngOnInit() {
 
     this.mqttService.getDesiredState('stringLights').subscribe((stateDoc: ILightArrayState) => {
       console.log('component state doc: ', stateDoc)
@@ -71,9 +71,12 @@ export class LightArrayComponent implements OnInit {
     this.mqttService.publishChangeToState(change)
   }
 
-  colorChange(event: IColorChangeEvent, animationToApply:string){
+  colorChange(event: IColorChangeEvent, animationToApply: string) {
     const color = this.lightArrayService.parseRgbColorFromString(event.color);
     this.lightArrayFormGroup.get(`animations.${animationToApply}.color`).setValue(color)
+  }
+
+  pixelPaint(event) {
   }
 
 }

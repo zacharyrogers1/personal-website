@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { MatGridList, MatGridTile } from '@angular/material/grid-list'
 import { IColorChangeEvent } from '../light-array.component';
-import { LightArrayService } from '../light-array.service';
+import { LightArrayService, RgbColor } from '../light-array.service';
 
 
 @Component({
@@ -11,10 +11,13 @@ import { LightArrayService } from '../light-array.service';
 })
 export class PixelPaintComponent implements OnInit {
   xAxisLength: number = 10;
-  pixelCount:number = 50;
+  pixelCount: number = 50;
   tilesToDisplay: IColorTile[] = [];
-  pixelPaintColor = 'rgb(0,255,0)'
+  pixelPaintColor = 'rgb(0,0,0)'
+  private readonly white: string = 'rgb(200,200,200)'
+  mouseIsPressed: boolean = false;
 
+  @Output() paintScreen = new EventEmitter<RgbScreen>();
 
   constructor(
     private lightArrayService: LightArrayService
@@ -22,18 +25,50 @@ export class PixelPaintComponent implements OnInit {
 
   ngOnInit(): void {
     for (let i = 0; i < this.pixelCount; i++) {
-      this.tilesToDisplay.push({ displayName: i.toString(), index: i , color: this.pixelPaintColor})
+      this.tilesToDisplay.push({ displayName: i.toString(), index: i, color: this.white })
     }
   }
-  gridTileMouseOver(index: number) {
-    console.log(index)
-    this.tilesToDisplay[index].color = this.pixelPaintColor;
+
+  gridTileMouseOver(index: number, override:boolean) {
+    if (this.mouseIsPressed || override) {
+      this.tilesToDisplay[index].color = this.pixelPaintColor;
+      this.paintScreen.emit(this.generateScreen());
+    }
   }
 
-  colorChange(event: IColorChangeEvent) {
-    const color = this.lightArrayService.parseRgbColorFromString(event.color);
-    console.log("I am new pixel paint color: ", this.pixelPaintColor)
+  mouseDown(event) {
+    console.log('mouseDown', event)
   }
+
+  generateScreen(): RgbScreen {
+    let screen: RgbScreen = this.lightArrayService.createBlankScreen(this.xAxisLength, this.pixelCount);
+    for (let i = 0; i < this.pixelCount; i++) {
+      const x = i % this.xAxisLength;
+      const y = Math.floor(i / this.xAxisLength);
+      const colorOfTile = this.lightArrayService.parseRgbColorFromString(this.tilesToDisplay[i].color);
+      screen[x][y] = colorOfTile
+    }
+
+    return screen
+  }
+
+  setMousePosition(mouseIsPressed: boolean): void {
+    this.mouseIsPressed = mouseIsPressed
+  }
+
+
+  // for (let i = 0; i < this.tilesToDisplay.length/this.xAxisLength; i++) {
+  //   screen.push([]);
+  //   for (let j = 0; j < this.xAxisLength; j++) {
+  //     const colorOfSquare = this.lightArrayService.parseRgbColorFromString()
+  //     screen.push()
+
+  //   }
+
+  // }
+
+  // return screen;
+
 
 
   //   def translate2DPointTo1DPosition(x, y, xAxisLength):
@@ -44,10 +79,18 @@ export class PixelPaintComponent implements OnInit {
   //         oneDValue = (y+1)*xAxisLength - (x+1)
   //     return oneDValue
 
+
 }
+
+export type RgbScreen = RgbColor[][]
 
 export interface IColorTile {
   displayName: string;
   index: number;
   color: string
 }
+
+const example: RgbScreen = [
+  [[255, 255, 255], [200, 200, 200]],
+  []
+]
