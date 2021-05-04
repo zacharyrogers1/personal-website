@@ -1,4 +1,5 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
+import { fromEvent, Subscription } from 'rxjs';
 import { LightArrayService, RgbColor } from '../light-array.service';
 
 
@@ -7,13 +8,14 @@ import { LightArrayService, RgbColor } from '../light-array.service';
   templateUrl: './pixel-paint.component.html',
   styleUrls: ['./pixel-paint.component.scss']
 })
-export class PixelPaintComponent implements OnInit {
+export class PixelPaintComponent implements OnInit, OnDestroy {
   xAxisLength: number = 10;
   pixelCount: number = 50;
   tilesToDisplay: IColorTile[] = [];
   pixelPaintColor = 'rgb(0,0,0)'
   private readonly grey: string = 'rgb(200,200,200)'
   mouseIsPressed: boolean = false;
+  subscriptions: Subscription[] = [];
 
   @Output() paintScreen = new EventEmitter<RgbScreen>();
 
@@ -25,17 +27,24 @@ export class PixelPaintComponent implements OnInit {
     for (let i = 0; i < this.pixelCount; i++) {
       this.tilesToDisplay.push({ displayName: i.toString(), index: i, color: this.grey })
     }
+
+    this.subscriptions.push(
+      fromEvent(document, 'mousedown').subscribe(() => {
+        this.mouseIsPressed = true;
+      })
+    )
+    this.subscriptions.push(
+      fromEvent(document, 'mouseup').subscribe(() => {
+        this.mouseIsPressed = false;
+      })
+    )
   }
 
-  gridTileMouseOver(index: number, override:boolean) {
+  gridTileMouseOver(index: number, override: boolean) {
     if (this.mouseIsPressed || override) {
       this.tilesToDisplay[index].color = this.pixelPaintColor;
       this.paintScreen.emit(this.generateScreen());
     }
-  }
-
-  mouseDown(event) {
-    console.log('mouseDown', event)
   }
 
   generateScreen(): RgbScreen {
@@ -50,10 +59,9 @@ export class PixelPaintComponent implements OnInit {
     return screen
   }
 
-  setMousePosition(mouseIsPressed: boolean): void {
-    this.mouseIsPressed = mouseIsPressed
+  ngOnDestroy() {
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
-
 
 }
 
