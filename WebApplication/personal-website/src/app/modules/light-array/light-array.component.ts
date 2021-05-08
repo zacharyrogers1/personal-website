@@ -77,7 +77,7 @@ export class LightArrayComponent implements OnInit {
   }
 
   pixelPaint(event:RgbScreen) {
-    this.mqttService.publishToPixelPaint(event);
+    this.mqttService.publishScreenToPixelPaint(event);
   }
 
   matTabSelected(tabIndex: number) {

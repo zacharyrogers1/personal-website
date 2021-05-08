@@ -5,12 +5,6 @@ export interface IColorChangeEvent {
   slider: string,
   color: string
 }
-
-//1. Define a static setup of each of the animations and what it needs for forms
-//2. Create dynamic forms by grabbing the state of the data first then looping through and dynamically creating UI based on what animations types there are
-//    Each animation would be its own card.
-//    For the animations if the property was "speed" then create a slider from 0 to 1
-//    For the animations if the property was "colors" then display a color picker for finding list of colors
 export interface IDeltaChanges {
   provider: AWSIoTProvider
   value: {
@@ -42,8 +36,6 @@ export interface ILightArrayState {
     }
   }
 }
-
-
 
 export type RgbScreen = RgbColor[][]
 

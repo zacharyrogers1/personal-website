@@ -60,9 +60,10 @@ export class MqttService {
     this.publishToTopic(updateStateTopic, change);
   }
 
-  publishToPixelPaint(screen: RgbScreen) {
+  publishScreenToPixelPaint(screen: RgbScreen) {
     const pixelPaintTopic: string = `${this.stringLightsThingName}/pixelPaint`;
-    this.publishToTopic(pixelPaintTopic, screen);
+    const messageToPublish = { pixelPaint: screen };
+    // this.publishToTopic(pixelPaintTopic, messageToPublish);
   }
 
 }
