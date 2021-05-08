@@ -3,7 +3,7 @@ import { PubSub } from 'aws-amplify';
 import { environment } from 'src/environments/environment';
 import { AWSIoTProvider } from "@aws-amplify/pubsub/lib/Providers/AWSIotProvider";
 import { AsyncSubject, Observable } from 'rxjs';
-import { ILightArrayState, IPixelPaintUpdate, RgbScreen } from '../modules/light-array/types';
+import { ILightArrayState, IPaintPixel, IPixelPaintUpdate, RgbScreen } from '../modules/light-array/types';
 
 
 @Injectable({
@@ -66,8 +66,9 @@ export class MqttService {
     // this.publishToTopic(this.pixelPaintTopic, messageToPublish);
   }
 
-  publishIndividualToPixelPaint(pixelToUpdate: IPixelPaintUpdate) {
-    this.publishToTopic(this.pixelPaintTopic, pixelToUpdate);
+  publishIndividualToPixelPaint(pixelToUpdate: IPaintPixel) {
+    console.log("Publishing Individual pixel ", pixelToUpdate);
+    // this.publishToTopic(this.pixelPaintTopic, pixelToUpdate);
   }
 
 }

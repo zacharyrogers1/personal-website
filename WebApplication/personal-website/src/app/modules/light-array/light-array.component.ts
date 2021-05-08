@@ -76,10 +76,6 @@ export class LightArrayComponent implements OnInit {
     this.lightArrayFormGroup.get(`animations.${animationToApply}.color`).setValue(color)
   }
 
-  pixelPaint(event:RgbScreen) {
-    this.mqttService.publishScreenToPixelPaint(event);
-  }
-
   matTabSelected(tabIndex: number) {
     if (tabIndex == 1) {
       const pixelPaintUpdate = { activeAnimation: 'pixelPaint' }

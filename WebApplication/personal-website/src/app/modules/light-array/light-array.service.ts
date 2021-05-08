@@ -32,18 +32,11 @@ export class LightArrayService {
     return screen
   }
 
-  convertIndexToPixelIndex(xAxisLength: number, index: number): number {
-    // Find if odd or even row
-    let translatedIndex: number;
-    const isEvenRow: boolean = Math.floor(index / xAxisLength) % 2 === 0;
-    if (isEvenRow) {
-      translatedIndex = index;
-    } else {
-      const rowAmount = xAxisLength * Math.floor(index/xAxisLength);
-      const leftovers = (index % xAxisLength) + 1;
-      translatedIndex = rowAmount + (xAxisLength - leftovers);
+  parseCoordinate(xAxisLength: number, index: number) {
+    return {
+      x: index % xAxisLength,
+      y: Math.floor(index / xAxisLength)
     }
-    return translatedIndex;
   }
 }
 

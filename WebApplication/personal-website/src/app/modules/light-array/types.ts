@@ -50,5 +50,11 @@ export interface IPixelPaintUpdate {
   color: RgbColor;
 }
 
+export interface IPaintPixel {
+  x: number;
+  y: number;
+  color: RgbColor;
+}
+
 export type RgbColor = [number, number, number]
 

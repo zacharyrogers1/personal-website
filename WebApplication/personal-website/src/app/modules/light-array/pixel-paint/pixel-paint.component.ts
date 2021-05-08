@@ -1,7 +1,8 @@
-import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { fromEvent, Subscription } from 'rxjs';
+import { MqttService } from 'src/app/services/mqtt.service';
 import { LightArrayService } from '../light-array.service';
-import { IColorTile, IPixelPaintUpdate, RgbScreen } from '../types';
+import { IColorTile, IPaintPixel, RgbScreen } from '../types';
 
 
 @Component({
@@ -15,27 +16,19 @@ export class PixelPaintComponent implements OnInit, OnDestroy {
   tilesToDisplay: IColorTile[] = [];
   pixelPaintColor = 'rgb(0,0,0)'
   private readonly grey: string = 'rgb(200,200,200)';
-  private readonly individualPublish: boolean = false;
+  private readonly individualPublish: boolean = true;
   mouseIsPressed: boolean = false;
   subscriptions: Subscription[] = [];
 
-  @Output() paintScreen = new EventEmitter<RgbScreen>();
-
   constructor(
-    private lightArrayService: LightArrayService
+    private lightArrayService: LightArrayService,
+    private mqttService: MqttService
   ) { }
 
   ngOnInit(): void {
 
-    if (this.individualPublish) {
-      for (let i = 0; i < this.pixelCount; i++) {
-        const translatedIndex = this.lightArrayService.convertIndexToPixelIndex(this.xAxisLength, i);
-        this.tilesToDisplay.push({ displayName: i.toString(), index: translatedIndex, color: this.grey })
-      }
-    } else {
-      for (let i = 0; i < this.pixelCount; i++) {
-        this.tilesToDisplay.push({ displayName: i.toString(), index: i, color: this.grey })
-      }
+    for (let i = 0; i < this.pixelCount; i++) {
+      this.tilesToDisplay.push({ displayName: i.toString(), index: i, color: this.grey })
     }
 
     this.subscriptions.push(
@@ -53,19 +46,22 @@ export class PixelPaintComponent implements OnInit, OnDestroy {
 
 
   gridTileMouseOver(index: number, override: boolean) {
-    if (this.individualPublish && (this.mouseIsPressed || override)) {
-      // this.tilesToDisplay[index].color = this.pixelPaintColor;
-      console.log("I am index: ", index);
-      // const thingToPublish: IPixelPaintUpdate = {
-      //   color: this.lightArrayService.parseRgbColorFromString(this.tilesToDisplay[i].color),
-      //   index: index
-      // }
-    }
-
     if (this.mouseIsPressed || override) {
       this.tilesToDisplay[index].color = this.pixelPaintColor;
-      this.paintScreen.emit(this.generateScreen());
+      if (this.individualPublish) {
+        const coordinate = this.lightArrayService.parseCoordinate(this.xAxisLength, index);
+        const coordinateWithColor: IPaintPixel = {
+          ...coordinate,
+          color: this.lightArrayService.parseRgbColorFromString(this.tilesToDisplay[index].color)
+        };
+
+        this.mqttService.publishIndividualToPixelPaint(coordinateWithColor);
+
+      } else {
+        this.mqttService.publishScreenToPixelPaint(this.generateScreen());
+      }
     }
+
   }
 
   generateScreen(): RgbScreen {
