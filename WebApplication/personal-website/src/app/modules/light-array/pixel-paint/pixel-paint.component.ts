@@ -1,6 +1,7 @@
 import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
 import { fromEvent, Subscription } from 'rxjs';
-import { LightArrayService, RgbColor } from '../light-array.service';
+import { LightArrayService } from '../light-array.service';
+import { IColorTile, RgbScreen } from '../types';
 
 
 @Component({
@@ -65,10 +66,3 @@ export class PixelPaintComponent implements OnInit, OnDestroy {
 
 }
 
-export type RgbScreen = RgbColor[][]
-
-export interface IColorTile {
-  displayName: string;
-  index: number;
-  color: string
-}

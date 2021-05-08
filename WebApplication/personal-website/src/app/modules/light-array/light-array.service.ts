@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { RgbScreen } from './pixel-paint/pixel-paint.component';
+import { RgbColor, RgbScreen } from './types';
 
 @Injectable({
   providedIn: 'root'
@@ -33,4 +33,3 @@ export class LightArrayService {
   }
 }
 
-export type RgbColor = [number, number, number]

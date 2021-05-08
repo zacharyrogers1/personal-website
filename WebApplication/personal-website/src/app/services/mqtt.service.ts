@@ -3,7 +3,8 @@ import { PubSub } from 'aws-amplify';
 import { environment } from 'src/environments/environment';
 import { AWSIoTProvider } from "@aws-amplify/pubsub/lib/Providers/AWSIotProvider";
 import { AsyncSubject, Observable } from 'rxjs';
-import { ILightArrayState } from '../modules/light-array/light-array.component';
+import { ILightArrayState, RgbScreen } from '../modules/light-array/types';
+
 
 @Injectable({
   providedIn: 'root'
@@ -18,9 +19,7 @@ export class MqttService {
   }
 
   async publishToTopic(topic: string, message): Promise<void> {
-    // PubSub.publish()
-    // PubSub.subscribe().subscribe()
-    await PubSub.publish(topic, message)
+    PubSub.publish(topic, message);
   }
 
   addPluggable() {
@@ -54,11 +53,16 @@ export class MqttService {
     return returnedObservable
   }
 
-  publishChangeToState(change:Object) {
-    const updateStateTopic:string = `$aws/things/${this.stringLightsThingName}/shadow/update`
+  publishChangeToState(change: Object) {
+    const updateStateTopic: string = `$aws/things/${this.stringLightsThingName}/shadow/update`
     // const stateToString = JSON.stringify(change)
 
     this.publishToTopic(updateStateTopic, change);
+  }
+
+  publishToPixelPaint(screen: RgbScreen) {
+    const pixelPaintTopic: string = `${this.stringLightsThingName}/pixelPaint`;
+    this.publishToTopic(pixelPaintTopic, screen);
   }
 
 }

@@ -9,13 +9,15 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSliderModule } from '@angular/material/slider';
 import { MatIconModule } from "@angular/material/icon";
 import { MatCheckboxModule } from "@angular/material/checkbox";
-import {MatToolbarModule} from '@angular/material/toolbar';
-import {MatSidenavModule} from '@angular/material/sidenav';
-import {MatListModule} from '@angular/material/list';
-import {MatCardModule} from '@angular/material/card';
-import {MatExpansionModule} from '@angular/material/expansion';
-import {MatRadioModule} from '@angular/material/radio'
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatListModule } from '@angular/material/list';
+import { MatCardModule } from '@angular/material/card';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatRadioModule } from '@angular/material/radio'
 import { MatGridListModule } from '@angular/material/grid-list'
+import { MatTabsModule } from '@angular/material/tabs';
+
 
 
 
@@ -42,6 +44,7 @@ import { MatGridListModule } from '@angular/material/grid-list'
     MatIconModule,
     ReactiveFormsModule,
     MatExpansionModule,
+    MatTabsModule,
     MatRadioModule
   ]
 })
