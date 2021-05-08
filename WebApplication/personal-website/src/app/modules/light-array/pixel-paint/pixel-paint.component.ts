@@ -1,7 +1,7 @@
 import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
 import { fromEvent, Subscription } from 'rxjs';
 import { LightArrayService } from '../light-array.service';
-import { IColorTile, RgbScreen } from '../types';
+import { IColorTile, IPixelPaintUpdate, RgbScreen } from '../types';
 
 
 @Component({
@@ -14,7 +14,8 @@ export class PixelPaintComponent implements OnInit, OnDestroy {
   pixelCount: number = 50;
   tilesToDisplay: IColorTile[] = [];
   pixelPaintColor = 'rgb(0,0,0)'
-  private readonly grey: string = 'rgb(200,200,200)'
+  private readonly grey: string = 'rgb(200,200,200)';
+  private readonly individualPublish: boolean = false;
   mouseIsPressed: boolean = false;
   subscriptions: Subscription[] = [];
 
@@ -25,8 +26,16 @@ export class PixelPaintComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    for (let i = 0; i < this.pixelCount; i++) {
-      this.tilesToDisplay.push({ displayName: i.toString(), index: i, color: this.grey })
+
+    if (this.individualPublish) {
+      for (let i = 0; i < this.pixelCount; i++) {
+        const translatedIndex = this.lightArrayService.convertIndexToPixelIndex(this.xAxisLength, i);
+        this.tilesToDisplay.push({ displayName: i.toString(), index: translatedIndex, color: this.grey })
+      }
+    } else {
+      for (let i = 0; i < this.pixelCount; i++) {
+        this.tilesToDisplay.push({ displayName: i.toString(), index: i, color: this.grey })
+      }
     }
 
     this.subscriptions.push(
@@ -41,7 +50,18 @@ export class PixelPaintComponent implements OnInit, OnDestroy {
     )
   }
 
+
+
   gridTileMouseOver(index: number, override: boolean) {
+    if (this.individualPublish && (this.mouseIsPressed || override)) {
+      // this.tilesToDisplay[index].color = this.pixelPaintColor;
+      console.log("I am index: ", index);
+      // const thingToPublish: IPixelPaintUpdate = {
+      //   color: this.lightArrayService.parseRgbColorFromString(this.tilesToDisplay[i].color),
+      //   index: index
+      // }
+    }
+
     if (this.mouseIsPressed || override) {
       this.tilesToDisplay[index].color = this.pixelPaintColor;
       this.paintScreen.emit(this.generateScreen());

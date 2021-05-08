@@ -45,5 +45,10 @@ export interface IColorTile {
   color: string
 }
 
+export interface IPixelPaintUpdate {
+  index: number;
+  color: RgbColor;
+}
+
 export type RgbColor = [number, number, number]
 
