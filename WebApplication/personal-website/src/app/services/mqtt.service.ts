@@ -34,10 +34,10 @@ export class MqttService {
     console.log("Current AmplifyPubSub", PubSub)
   }
 
-  getDesiredState(thingName: string): Observable<ILightArrayState> {
+  getDesiredState(): Observable<ILightArrayState> {
     const returnedObservable: AsyncSubject<ILightArrayState> = new AsyncSubject();
-    const getStateTopic = `$aws/things/${thingName}/shadow/get`
-    const stateResponseTopic = `$aws/things/${thingName}/shadow/get/accepted`
+    const getStateTopic = `$aws/things/${this.stringLightsThingName}/shadow/get`
+    const stateResponseTopic = `$aws/things/${this.stringLightsThingName}/shadow/get/accepted`
 
     this.subscribeToTopic(stateResponseTopic).subscribe((stateDocument) => {
       console.log("The state document: ", stateDocument)

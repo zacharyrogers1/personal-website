@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MqttService } from 'src/app/services/mqtt.service';
-import { AWSIoTProvider } from "@aws-amplify/pubsub/lib/Providers/AWSIotProvider";
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { LightArrayService } from './light-array.service';
 import { IColorChangeEvent, ILightArrayState, RgbScreen } from './types';
 
@@ -43,7 +42,7 @@ export class LightArrayComponent implements OnInit {
 
   ngOnInit() {
 
-    this.mqttService.getDesiredState('stringLights').subscribe((stateDoc: ILightArrayState) => {
+    this.mqttService.getDesiredState().subscribe((stateDoc: ILightArrayState) => {
       console.log('component state doc: ', stateDoc)
       this.lightArrayFormGroup.setValue(stateDoc);
 
