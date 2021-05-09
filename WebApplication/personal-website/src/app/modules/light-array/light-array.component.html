@@ -1,4 +1,11 @@
-<mat-tab-group (selectedIndexChange)="matTabSelected($event)"  >
+<mat-card>
+  <mat-card-title>
+    Brightness <mat-slider min="0" max="1" step="0.1" thumbLabel="true" [formControl]="lightArrayFormGroup.get('brightness')">
+    </mat-slider>
+  </mat-card-title>
+</mat-card>
+
+<mat-tab-group (selectedIndexChange)="matTabSelected($event)">
   <mat-tab label="Animations">
     <form class="example-container" [formGroup]="lightArrayFormGroup">
       <mat-radio-group class="asCard" formControlName='activeAnimation'>

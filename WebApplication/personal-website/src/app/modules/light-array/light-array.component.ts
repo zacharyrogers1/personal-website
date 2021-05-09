@@ -13,6 +13,7 @@ export class LightArrayComponent implements OnInit {
 
   lightArrayFormGroup: FormGroup = new FormGroup({
     activeAnimation: new FormControl(''),
+    brightness: new FormControl(1),
     animations: new FormGroup({
       chasingLights: new FormGroup({
         speed: new FormControl(1),
@@ -61,14 +62,7 @@ export class LightArrayComponent implements OnInit {
   }
 
   updateDesiredState(desiredState: Object) {
-    const change = {
-      state:
-      {
-        desired: desiredState
-      }
-    }
-
-    this.mqttService.publishChangeToState(change)
+    this.mqttService.updateDesiredState(desiredState)
   }
 
   colorChange(event: IColorChangeEvent, animationToApply: string) {

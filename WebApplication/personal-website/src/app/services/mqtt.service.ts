@@ -54,11 +54,18 @@ export class MqttService {
     return returnedObservable
   }
 
-  publishChangeToState(change: Object) {
+  updateDesiredState(partialDesiredState: Object) {
+    const desiredUpdate = {
+      state:
+      {
+        desired: partialDesiredState
+      }
+    }
+
     const updateStateTopic: string = `$aws/things/${this.stringLightsThingName}/shadow/update`
     // const stateToString = JSON.stringify(change)
 
-    this.publishToTopic(updateStateTopic, change);
+    this.publishToTopic(updateStateTopic, desiredUpdate);
   }
 
   publishScreenToPixelPaint(screen: RgbScreen) {
