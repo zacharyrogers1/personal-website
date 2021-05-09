@@ -11,7 +11,7 @@ import { ILightArrayState, IPaintPixel, IPixelPaintUpdate, RgbScreen } from '../
 })
 export class MqttService {
   private readonly stringLightsThingName: string = 'stringLights';
-  private readonly pixelPaintTopic:string = `${this.stringLightsThingName}/pixelPaint`;
+  private readonly pixelPaintTopic: string = `${this.stringLightsThingName}/pixelPaint`;
 
   constructor() { }
 
@@ -67,8 +67,9 @@ export class MqttService {
   }
 
   publishIndividualToPixelPaint(pixelToUpdate: IPaintPixel) {
-    console.log("Publishing Individual pixel ", pixelToUpdate);
-    // this.publishToTopic(this.pixelPaintTopic, pixelToUpdate);
+    const messageToPublish = { pixelPaint: pixelToUpdate }
+    console.log("Publishing Individual pixel ", messageToPublish);
+    this.publishToTopic(this.pixelPaintTopic, messageToPublish);
   }
 
 }
