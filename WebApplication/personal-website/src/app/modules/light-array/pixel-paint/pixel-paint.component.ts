@@ -55,13 +55,24 @@ export class PixelPaintComponent implements OnInit, OnDestroy {
           color: this.lightArrayService.parseRgbColorFromString(this.tilesToDisplay[index].color)
         };
 
-        this.mqttService.publishIndividualToPixelPaint(coordinateWithColor);
+        this.mqttService.publishToPixelPaint([coordinateWithColor]);
 
       } else {
         this.mqttService.publishScreenToPixelPaint(this.generateScreen());
       }
     }
 
+  }
+
+  clearScreen() {
+    let clearScreen: IPaintPixel[] = [];
+    for (let i = 0; i < this.pixelCount; i++) {
+      const coordinate = this.lightArrayService.parseCoordinate(this.xAxisLength, i);
+      const coordinateWithColor: IPaintPixel = { ...coordinate, color: [0, 0, 0] };
+      clearScreen.push(coordinateWithColor);
+      this.tilesToDisplay[i].color = 'rgb(0,0,0)';
+    }
+    this.mqttService.publishToPixelPaint(clearScreen);
   }
 
   generateScreen(): RgbScreen {
