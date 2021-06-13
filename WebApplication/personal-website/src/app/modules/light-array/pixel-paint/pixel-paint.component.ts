@@ -31,37 +31,22 @@ export class PixelPaintComponent implements OnInit, OnDestroy {
       this.tilesToDisplay.push({ displayName: i.toString(), index: i, color: this.grey })
     }
 
-    this.subscriptions.push(
-      fromEvent(document, 'mousedown').subscribe(() => {
-        this.mouseIsPressed = true;
-      })
-    )
-    this.subscriptions.push(
-      fromEvent(document, 'mouseup').subscribe(() => {
-        this.mouseIsPressed = false;
-      })
-    )
   }
 
+  touchTile(tileNumber: number) {
+    this.tilesToDisplay[tileNumber].color = this.pixelPaintColor;
+  }
 
+  panOverTile(evt: any) {
+    this.colorPixel1(evt.center.x, evt.center.y)
+  }
 
-  gridTileMouseOver(index: number, override: boolean) {
-    if (this.mouseIsPressed || override) {
-      this.tilesToDisplay[index].color = this.pixelPaintColor;
-      if (this.individualPublish) {
-        const coordinate = this.lightArrayService.parseCoordinate(this.xAxisLength, index);
-        const coordinateWithColor: IPaintPixel = {
-          ...coordinate,
-          color: this.lightArrayService.parseRgbColorFromString(this.tilesToDisplay[index].color)
-        };
-
-        this.mqttService.publishToPixelPaint([coordinateWithColor]);
-
-      } else {
-        this.mqttService.publishScreenToPixelPaint(this.generateScreen());
-      }
+  colorPixel1(x: number, y: number) {
+    const tileElement = document.elementsFromPoint(x, y)[1]; //THe 0th element is a mat figure and we need the mat-tile element
+    if (tileElement.id) {
+      const tileNumber = tileElement.id;
+      this.tilesToDisplay[tileNumber].color = this.pixelPaintColor;
     }
-
   }
 
   clearScreen() {

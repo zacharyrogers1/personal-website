@@ -1,14 +1,14 @@
 <mat-card>
   <mat-card-title>
     Color:
-    <input [(colorPicker)]="pixelPaintColor" [style.background]="pixelPaintColor" cpOutputFormat="rgba"
+    <input [(colorPicker)]="pixelPaintColor" [style.background]="pixelPaintColor" cpOutputFormat="rgba" cpWidth="auto"
       cpAlphaChannel="disabled" />
     <button button mat-raised-button (click)="clearScreen()">Clear Pixels</button>
   </mat-card-title>
   <mat-card-content>
-    <mat-grid-list [cols]="xAxisLength" rowHeight="1:1">
-      <mat-grid-tile *ngFor="let tile of tilesToDisplay;" [style.background]="tile.color"
-        (mouseover)="gridTileMouseOver(tile.index, false)" (click)="gridTileMouseOver(tile.index, true)">
+    <mat-grid-list [cols]="xAxisLength" rowHeight="1:1" >
+      <mat-grid-tile *ngFor="let tile of tilesToDisplay" [style.background]="tile.color" (pan)="panOverTile($event)" (touchstart)="touchTile(tile.index)"
+          [id]="tile.index">
       </mat-grid-tile>
     </mat-grid-list>
   </mat-card-content>

@@ -17,6 +17,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatRadioModule } from '@angular/material/radio'
 import { MatGridListModule } from '@angular/material/grid-list'
 import { MatTabsModule } from '@angular/material/tabs';
+import { HammerModule } from '@angular/platform-browser';
 
 
 
@@ -45,7 +46,8 @@ import { MatTabsModule } from '@angular/material/tabs';
     ReactiveFormsModule,
     MatExpansionModule,
     MatTabsModule,
-    MatRadioModule
+    MatRadioModule,
+    HammerModule
   ]
 })
 export class MaterialModule { }
