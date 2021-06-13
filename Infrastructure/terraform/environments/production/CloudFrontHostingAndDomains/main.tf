@@ -10,7 +10,7 @@ terraform {
 
 provider "aws" {
   profile = "ZachTerraform"
-  region  = var.aws_region
+  region  = "us-west-1"
 }
 
 provider "aws" {
@@ -23,7 +23,7 @@ provider "aws" {
 module "CertificatesAndDomains" {
   source = "../../../modules/CertificatesAndDomains"
   providers = {
-    aws = "aws.useast1"
+    aws = aws.useast1
   }
   website_domain_name = var.website_domain_name
 }
@@ -31,6 +31,6 @@ module "CertificatesAndDomains" {
 module "CloudFrontDistribution" {
   source = "../../../modules/CloudFrontDistribution"
   acm_certificate_arn = module.CertificatesAndDomains.acm_certificate_arn
-  s3_bucket_name = var.s3_bucket_name
+  s3_bucket_name = "personal-website-cloudfront-distribution-bucket"
   website_domain_name = var.website_domain_name
 }

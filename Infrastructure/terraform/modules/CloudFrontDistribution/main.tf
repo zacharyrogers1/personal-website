@@ -146,7 +146,7 @@ data "aws_route53_zone" "zone" {
 
 resource "aws_route53_record" "route53_alias_record" {
   depends_on = [
-    "aws_cloudfront_distribution.s3_distribution",
+    aws_cloudfront_distribution.s3_distribution,
   ]
 
   zone_id = data.aws_route53_zone.zone.zone_id
