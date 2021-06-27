@@ -29,12 +29,16 @@ export interface ILightArrayState {
     unifiedRainbow: {
       speed: number
     },
+    twinkle: {
+      speed: number,
+      color: RgbColor
+    },
     chasingLights: {
       speed: number,
       numLitPixels: number,
       color: RgbColor
     }
-  }
+  };
 }
 
 export type RgbScreen = RgbColor[][]

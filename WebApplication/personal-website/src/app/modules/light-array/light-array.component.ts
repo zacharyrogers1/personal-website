@@ -27,14 +27,19 @@ export class LightArrayComponent implements OnInit {
       unifiedRainbow: new FormGroup({
         speed: new FormControl(1),
       }),
+      twinkle: new FormGroup({
+        speed: new FormControl(1),
+        color: new FormControl([0, 0, 255])
+      }),
       countdown: new FormGroup({
         timeInSeconds: new FormControl(10),
       })
     })
   });
 
-  chasingLightsColor = 'rgb(0,0,0)'
-  pingPongColor = 'rgb(0,0,0)'
+  chasingLightsColor = 'rgb(0,0,0)';
+  pingPongColor = 'rgb(0,0,0)';
+  twinkleColor = 'rgb(0,0,0)';
 
   constructor(
     private mqttService: MqttService,
@@ -52,6 +57,9 @@ export class LightArrayComponent implements OnInit {
 
       const pingPongColor = stateDoc.animations.pingPong.color
       this.pingPongColor = `rgb(${pingPongColor[0]}, ${pingPongColor[1]}, ${pingPongColor[2]})`
+
+      const twinkleColor = stateDoc.animations.twinkle.color
+      this.twinkleColor = `rgb(${twinkleColor[0]}, ${twinkleColor[1]}, ${twinkleColor[2]})`
     });
 
     this.lightArrayFormGroup.valueChanges.subscribe((desiredState: ILightArrayState) => {

@@ -48,6 +48,18 @@
               Speed: <mat-slider min="0" max="1" step="0.1" thumbLabel="true" formControlName="speed"></mat-slider>
             </mat-card-content>
           </mat-card>
+          <mat-card formGroupName="twinkle">
+            <mat-card-title>
+              <mat-radio-button value="twinkle">
+                Twinkle
+              </mat-radio-button>
+            </mat-card-title>
+            <mat-card-content>
+              Speed: <mat-slider min="0" max="1" step="0.1" thumbLabel="true" formControlName="speed"></mat-slider>
+              Color: <input [(colorPicker)]="twinkleColor" [style.background]="twinkleColor" cpOutputFormat="rgba"
+              cpAlphaChannel="disabled" (cpSliderDragEnd)="colorChange($event, 'twinkle')" />
+            </mat-card-content>
+          </mat-card>
           <mat-card formGroupName="countdown">
             <mat-card-title>
               <mat-radio-button value="countdown">
