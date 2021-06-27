@@ -33,6 +33,10 @@ export interface ILightArrayState {
       speed: number,
       color: RgbColor
     },
+    scanningStripe: {
+      speed: number,
+      color: RgbColor
+    },
     chasingLights: {
       speed: number,
       numLitPixels: number,
