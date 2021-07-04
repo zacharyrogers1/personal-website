@@ -12,20 +12,31 @@ import { IColorTile, IPaintPixel, RgbScreen } from '../types';
 })
 export class PixelPaintComponent implements OnInit, OnDestroy {
   xAxisLength: number = 10;
-  pixelCount: number = 50;
+  pixelCount: number = 400;
   tilesToDisplay: IColorTile[] = [];
   pixelPaintColor = 'rgb(0,0,0)';
   private readonly grey: string = 'rgb(200,200,200)';
   subscriptions: Subscription[] = [];
+  isFullScreen:boolean = false;
 
   constructor(
     private lightArrayService: LightArrayService,
     private mqttService: MqttService
   ) { }
 
-  ngOnInit(): void {
+  ngOnInit() {
     for (let i = 0; i < this.pixelCount; i++) {
       this.tilesToDisplay.push({ displayName: i.toString(), index: i, color: this.grey });
+    }
+  }
+
+  toggleFullScreen() {
+    this.isFullScreen = !this.isFullScreen;
+    const pixelPaintElement = document.getElementById("pixelPaintContainer")
+    if(!document.fullscreenElement){
+      pixelPaintElement.requestFullscreen();
+    } else {
+      document.exitFullscreen();
     }
   }
 
