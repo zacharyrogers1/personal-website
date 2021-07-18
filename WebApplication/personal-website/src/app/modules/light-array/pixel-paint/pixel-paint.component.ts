@@ -11,7 +11,7 @@ import { IColorTile, IPaintPixel, RgbScreen } from '../types';
   styleUrls: ['./pixel-paint.component.scss']
 })
 export class PixelPaintComponent implements OnInit, OnDestroy {
-  xAxisLength: number = 10;
+  xAxisLength: number = 20;
   pixelCount: number = 400;
   tilesToDisplay: IColorTile[] = [];
   pixelPaintColor = 'rgb(0,0,0)';
