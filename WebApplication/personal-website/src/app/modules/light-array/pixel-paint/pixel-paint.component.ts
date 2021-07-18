@@ -46,10 +46,10 @@ export class PixelPaintComponent implements OnInit, OnDestroy {
   }
 
   panOverTile(evt: any) {
-    this.colorPixel1(evt.center.x, evt.center.y);
+    this.colorPixel(evt.center.x, evt.center.y);
   }
 
-  colorPixel1(xScreen: number, yScreen: number) {
+  colorPixel(xScreen: number, yScreen: number) {
     const tileElement = document.elementsFromPoint(xScreen, yScreen)[1]; //THe 0th element is a mat figure and we need the mat-tile element
     if (tileElement.id) {
       const tileNumber = tileElement.id;
