@@ -7,3 +7,17 @@ mat-grid-tile{
 button {
   float: right;
 }
+
+#fullscreenButton {
+  margin-right: 1%;
+}
+
+#clickToStart{
+  width: 100vh;
+  height: 100vh;
+  cursor: pointer
+}
+
+mat-card-title {
+  height: 5%;
+}
