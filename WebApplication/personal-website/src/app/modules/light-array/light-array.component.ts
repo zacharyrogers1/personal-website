@@ -16,23 +16,23 @@ export class LightArrayComponent implements OnInit {
     brightness: new FormControl(1),
     animations: new FormGroup({
       chasingLights: new FormGroup({
-        speed: new FormControl(1),
+        speed: new FormControl(0),
         numLitPixels: new FormControl(3),
         color: new FormControl([0, 0, 255])
       }),
       pingPong: new FormGroup({
-        speed: new FormControl(1),
+        speed: new FormControl(0),
         color: new FormControl([0, 0, 255])
       }),
       unifiedRainbow: new FormGroup({
         speed: new FormControl(1),
       }),
       twinkle: new FormGroup({
-        speed: new FormControl(1),
+        speed: new FormControl(0),
         color: new FormControl([0, 0, 255])
       }),
       scanningStripe: new FormGroup({
-        speed: new FormControl(1),
+        speed: new FormControl(0),
         color: new FormControl([0, 0, 255])
       }),
       countdown: new FormGroup({
