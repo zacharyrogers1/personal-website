@@ -1,9 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { device, DeviceOptions } from 'aws-iot-device-sdk';
-import { CognitoIdentity, config, CognitoIdentityCredentials, AWSError } from 'aws-sdk';
-import { GlobalConfigInstance } from 'aws-sdk/lib/config';
-import { v4 } from 'uuid';
-import { Subject, Subscription } from 'rxjs';
 import { MqttService } from 'src/app/services/mqtt.service';
 
 @Component({
