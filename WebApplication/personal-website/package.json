@@ -5,7 +5,6 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
-    "postinstall": "ts-node ./tools/postinstall/patch-ngcli-webpack.js",
     "deploy:prod": "ng build --configuration production=true && aws s3 cp ./dist/personal-website/ s3://personal-website-cloudfront-distribution-bucket --recursive --profile ZachTerraform",
     "test": "ng test",
     "lint": "ng lint",
