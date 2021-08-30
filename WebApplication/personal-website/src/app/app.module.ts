@@ -16,7 +16,7 @@ Amplify.configure(environment.awsConfig);
 const routes: Routes = [
   { path: 'signIn', loadChildren: () => import('./modules/sign-in/sign-in.module').then(m => m.SignInModule) },
   { path: '', loadChildren: () => import('./modules/main/main.module').then(m => m.MainModule) },
-  { path: '**', loadChildren: 'home' }
+  { path: '**', loadChildren: () => import('home').then(m => m.default) }
 ];
 
 @NgModule({
