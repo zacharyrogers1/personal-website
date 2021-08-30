@@ -8,7 +8,7 @@ import { environment } from 'src/environments/environment';
 import { AmplifyUIAngularModule } from '@aws-amplify/ui-angular';
 import { BlindsModule } from './modules/blinds/blinds.module';
 import { RouterModule, Routes } from '@angular/router';
-import { Amplify } from 'aws-amplify';
+import { Amplify } from '@aws-amplify/core';
 
 Amplify.configure(environment.awsConfig);
 

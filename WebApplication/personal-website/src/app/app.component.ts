@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Hub } from 'aws-amplify';
+import { Hub } from '@aws-amplify/core';
 import { AuthService } from './services/auth.service';
 import { MqttService } from './services/mqtt.service';
 

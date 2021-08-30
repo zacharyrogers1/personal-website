@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
+import { Auth } from '@aws-amplify/auth';
 import { ICredentials } from '@aws-amplify/core';
 import { CognitoUserSession } from 'amazon-cognito-identity-js';
-import { Auth } from 'aws-amplify';
 
 
 @Injectable({
