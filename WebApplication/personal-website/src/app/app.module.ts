@@ -24,7 +24,7 @@ const routes: Routes = [
     AppComponent
   ],
   imports: [
-    RouterModule.forRoot(routes),
+    RouterModule.forRoot(routes, { relativeLinkResolution: 'legacy' }),
     BrowserModule,
     BrowserAnimationsModule,
     AmplifyUIAngularModule,
