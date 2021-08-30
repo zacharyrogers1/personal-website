@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { PubSub } from 'aws-amplify';
 import { environment } from 'src/environments/environment';
-import { AWSIoTProvider } from "@aws-amplify/pubsub/lib/Providers/AWSIotProvider";
 import { AsyncSubject, Observable } from 'rxjs';
 import { ILightArrayState, IPaintPixel, IPixelPaintUpdate, RgbScreen } from '../modules/light-array/types';
+import { PubSub } from 'aws-amplify';
+import { AWSIoTProvider } from '@aws-amplify/pubsub';
 
 
 @Injectable({

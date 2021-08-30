@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
+import { ICredentials } from '@aws-amplify/core';
 import { CognitoUserSession } from 'amazon-cognito-identity-js';
-import { Auth, Hub } from 'aws-amplify';
-import { ICredentials }  from "aws-amplify/lib-esm/Common/types/types"
+import { Auth } from 'aws-amplify';
 
 
 @Injectable({
@@ -16,7 +16,7 @@ export class AuthService {
   }
 
   async getCurrentSession():Promise<CognitoUserSession> {
-   
+
     return Auth.currentSession();
   }
 

@@ -4,12 +4,11 @@ import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import Amplify from 'aws-amplify';
 import { environment } from 'src/environments/environment';
 import { AmplifyUIAngularModule } from '@aws-amplify/ui-angular';
 import { BlindsModule } from './modules/blinds/blinds.module';
 import { RouterModule, Routes } from '@angular/router';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { Amplify } from 'aws-amplify';
 
 Amplify.configure(environment.awsConfig);
 
