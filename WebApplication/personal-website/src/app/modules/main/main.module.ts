@@ -14,7 +14,6 @@ const routes: Routes = [
   {
     path: '', component: SideNavComponent, children: [
       { path: 'home', loadChildren: () => import('../home/home.module').then(m => m.HomeModule) },
-      { path: 'demo', loadChildren: () => import('../demo/demo.module').then(m => m.DemoModule) },
       { path: 'bio', loadChildren: () => import('../bio/bio.module').then(m => m.BioModule) },
       { path: 'lightArray', loadChildren: () => import('../light-array/light-array.module').then(m => m.LightArrayModule) },
       { path: 'projectShowcase', loadChildren: () => import('../project-showcase/project-showcase.module').then(m => m.ProjectShowcaseModule) },
