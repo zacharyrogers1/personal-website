@@ -25,13 +25,17 @@ export class LightArrayComponent implements OnInit {
         color: new FormControl([0, 0, 255])
       }),
       unifiedRainbow: new FormGroup({
-        speed: new FormControl(1),
+        speed: new FormControl(0),
       }),
       twinkle: new FormGroup({
         speed: new FormControl(0),
         color: new FormControl([0, 0, 255])
       }),
       scanningStripe: new FormGroup({
+        speed: new FormControl(0),
+        color: new FormControl([0, 0, 255])
+      }),
+      fillAndEmpty: new FormGroup({
         speed: new FormControl(0),
         color: new FormControl([0, 0, 255])
       }),
@@ -45,6 +49,7 @@ export class LightArrayComponent implements OnInit {
   pingPongColor = 'rgb(0,0,0)';
   twinkleColor = 'rgb(0,0,0)';
   scanningStripeColor = 'rgb(0,0,0)';
+  fillAndEmptyColor = 'rgb(0,0,0)';
 
   constructor(
     private mqttService: MqttService,
@@ -68,6 +73,9 @@ export class LightArrayComponent implements OnInit {
 
       const scanningStripeColor = stateDoc.animations.scanningStripe.color;
       this.scanningStripeColor = `rgb(${scanningStripeColor[0]}, ${scanningStripeColor[1]}, ${scanningStripeColor[2]})`;
+
+      const fillAndEmptyColor = stateDoc.animations.scanningStripe.color;
+      this.fillAndEmptyColor = `rgb(${fillAndEmptyColor[0]}, ${fillAndEmptyColor[1]}, ${fillAndEmptyColor[2]})`;
     });
 
     this.lightArrayFormGroup.valueChanges.subscribe((desiredState: ILightArrayState) => {
