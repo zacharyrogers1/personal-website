@@ -67,14 +67,8 @@ export class MqttService {
     this.publishToTopic(updateStateTopic, desiredUpdate);
   }
 
-  publishScreenToPixelPaint(screen: RgbScreen) {
-    const messageToPublish = { pixelPaint: screen };
-    // this.publishToTopic(this.pixelPaintTopic, messageToPublish);
-  }
-
   publishToPixelPaint(pixelsToUpdate: IPaintPixel[]) {
     const messageToPublish = { pixelPaint: pixelsToUpdate }
-    console.log("Publishing Individual pixel ", messageToPublish);
     this.publishToTopic(this.pixelPaintTopic, messageToPublish);
   }
 

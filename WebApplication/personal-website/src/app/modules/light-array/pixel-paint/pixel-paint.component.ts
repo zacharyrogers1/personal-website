@@ -1,5 +1,6 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { fromEvent, Subscription } from 'rxjs';
+import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { fromEvent, Observable, Subject, Subscription } from 'rxjs';
+import { catchError, distinctUntilChanged, filter, map, tap } from 'rxjs/operators';
 import { MqttService } from 'src/app/services/mqtt.service';
 import { LightArrayService } from '../light-array.service';
 import { IColorTile, IPaintPixel, RgbScreen } from '../types';
@@ -8,9 +9,10 @@ import { IColorTile, IPaintPixel, RgbScreen } from '../types';
 @Component({
   selector: 'app-pixel-paint',
   templateUrl: './pixel-paint.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrls: ['./pixel-paint.component.scss']
 })
-export class PixelPaintComponent implements OnInit, OnDestroy {
+export class PixelPaintComponent implements OnInit, OnDestroy, AfterViewInit {
   xAxisLength: number = 20;
   pixelCount: number = 400;
   tilesToDisplay: IColorTile[] = [];
@@ -18,23 +20,46 @@ export class PixelPaintComponent implements OnInit, OnDestroy {
   private readonly grey: string = 'rgb(200,200,200)';
   subscriptions: Subscription[] = [];
   isFullScreen:boolean = false;
+  colorStream: Subject<{x:number, y:number}> = new Subject();
+  colorStreamEffects: Observable<any> = this.colorStream.pipe(
+    map(({x, y}) =>  document.elementsFromPoint(x, y)[1].id),//THe 0th element is a mat figure and we need the mat-tile element),
+    filter((id:string) => id && (id !== 'paintTiles')),
+    distinctUntilChanged(),
+    tap((id:string) => {
+      this.tilesToDisplay[id].color = this.pixelPaintColor;
+      this.changeDetectorRef.detectChanges()
+      this.publishToPixelPaint(parseInt(id), this.pixelPaintColor);
+    }),
+    catchError((err, caught) => caught)
+  );
 
   constructor(
     private lightArrayService: LightArrayService,
-    private mqttService: MqttService
+    private mqttService: MqttService,
+    private changeDetectorRef: ChangeDetectorRef,
   ) { }
 
   ngOnInit() {
+    this.changeDetectorRef.detach();
     for (let i = 0; i < this.pixelCount; i++) {
       this.tilesToDisplay.push({ displayName: i.toString(), index: i, color: this.grey });
     }
+    this.subscriptions.push(
+      this.colorStreamEffects.subscribe()
+    );
+  }
+  
+  ngAfterViewInit() {
+    this.changeDetectorRef.detectChanges()
   }
 
   toggleFullScreen() {
     this.isFullScreen = !this.isFullScreen;
     const pixelPaintElement = document.getElementById("pixelPaintContainer")
     if(!document.fullscreenElement){
-      pixelPaintElement.requestFullscreen();
+      pixelPaintElement.requestFullscreen().then(() => {
+        this.changeDetectorRef.detectChanges()
+      });
     } else {
       document.exitFullscreen();
     }
@@ -46,16 +71,7 @@ export class PixelPaintComponent implements OnInit, OnDestroy {
   }
 
   panOverTile(evt: any) {
-    this.colorPixel(evt.center.x, evt.center.y);
-  }
-
-  colorPixel(xScreen: number, yScreen: number) {
-    const tileElement = document.elementsFromPoint(xScreen, yScreen)[1]; //THe 0th element is a mat figure and we need the mat-tile element
-    if (tileElement.id) {
-      const tileNumber = tileElement.id;
-      this.tilesToDisplay[tileNumber].color = this.pixelPaintColor;
-      this.publishToPixelPaint(parseInt(tileNumber), this.pixelPaintColor);
-    }
+    this.colorStream.next({x: evt.center.x, y:  evt.center.y})
   }
 
   publishToPixelPaint(index: number, color: string) {
