@@ -1,55 +1,30 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MqttService } from 'src/app/services/mqtt.service';
 import { FormControl, FormGroup } from '@angular/forms';
 import { LightArrayService } from './light-array.service';
 import { IColorChangeEvent, ILightArrayState, RgbScreen } from './types';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-light-array',
   templateUrl: './light-array.component.html',
   styleUrls: ['./light-array.component.scss']
 })
-export class LightArrayComponent implements OnInit {
+export class LightArrayComponent implements OnInit, OnDestroy {
 
   lightArrayFormGroup: FormGroup = new FormGroup({
     activeAnimation: new FormControl(''),
     brightness: new FormControl(1),
+    color: new FormControl([0, 0, 255]),
+    speed: new FormControl(0.1),
     animations: new FormGroup({
       chasingLights: new FormGroup({
-        speed: new FormControl(0),
         numLitPixels: new FormControl(3),
-        color: new FormControl([0, 0, 255])
       }),
-      pingPong: new FormGroup({
-        speed: new FormControl(0),
-        color: new FormControl([0, 0, 255])
-      }),
-      unifiedRainbow: new FormGroup({
-        speed: new FormControl(0),
-      }),
-      twinkle: new FormGroup({
-        speed: new FormControl(0),
-        color: new FormControl([0, 0, 255])
-      }),
-      scanningStripe: new FormGroup({
-        speed: new FormControl(0),
-        color: new FormControl([0, 0, 255])
-      }),
-      fillAndEmpty: new FormGroup({
-        speed: new FormControl(0),
-        color: new FormControl([0, 0, 255])
-      }),
-      countdown: new FormGroup({
-        timeInSeconds: new FormControl(10),
-      })
     })
   });
-
-  chasingLightsColor = 'rgb(0,0,0)';
-  pingPongColor = 'rgb(0,0,0)';
-  twinkleColor = 'rgb(0,0,0)';
-  scanningStripeColor = 'rgb(0,0,0)';
-  fillAndEmptyColor = 'rgb(0,0,0)';
+  selectedColor = 'rgb(0,0,0)';
+  subscriptions: Subscription[] = [];
 
   constructor(
     private mqttService: MqttService,
@@ -58,40 +33,31 @@ export class LightArrayComponent implements OnInit {
 
   ngOnInit() {
 
-    this.mqttService.getDesiredState().subscribe((stateDoc: ILightArrayState) => {
-      console.log('component state doc: ', stateDoc);
-      this.lightArrayFormGroup.setValue(stateDoc);
+    this.subscriptions.push(
+      this.mqttService.getDesiredState().subscribe((stateDoc: ILightArrayState) => {
+        console.log('component state doc: ', stateDoc);
+        this.lightArrayFormGroup.setValue(stateDoc);
 
-      const chasingLightsColor = stateDoc.animations.chasingLights.color;
-      this.chasingLightsColor = `rgb(${chasingLightsColor[0]}, ${chasingLightsColor[1]}, ${chasingLightsColor[2]})`;
+        const selectedColor = stateDoc.color;
+        this.selectedColor = `rgb(${selectedColor[0]}, ${selectedColor[1]}, ${selectedColor[2]})`;
+      })
+    );
 
-      const pingPongColor = stateDoc.animations.pingPong.color;
-      this.pingPongColor = `rgb(${pingPongColor[0]}, ${pingPongColor[1]}, ${pingPongColor[2]})`;
-
-      const twinkleColor = stateDoc.animations.twinkle.color;
-      this.twinkleColor = `rgb(${twinkleColor[0]}, ${twinkleColor[1]}, ${twinkleColor[2]})`;
-
-      const scanningStripeColor = stateDoc.animations.scanningStripe.color;
-      this.scanningStripeColor = `rgb(${scanningStripeColor[0]}, ${scanningStripeColor[1]}, ${scanningStripeColor[2]})`;
-
-      const fillAndEmptyColor = stateDoc.animations.scanningStripe.color;
-      this.fillAndEmptyColor = `rgb(${fillAndEmptyColor[0]}, ${fillAndEmptyColor[1]}, ${fillAndEmptyColor[2]})`;
-    });
-
-    this.lightArrayFormGroup.valueChanges.subscribe((desiredState: ILightArrayState) => {
-      console.log('Value of lightArrayFormGroup: ', desiredState);
-      this.updateDesiredState(desiredState);
-    });
-
+    this.subscriptions.push(
+      this.lightArrayFormGroup.valueChanges.subscribe((desiredState: ILightArrayState) => {
+        console.log('Value of lightArrayFormGroup: ', desiredState);
+        this.updateDesiredState(desiredState);
+      })
+    );
   }
 
   updateDesiredState(desiredState: Object) {
     this.mqttService.updateDesiredState(desiredState);
   }
 
-  colorChange(event: IColorChangeEvent, animationToApply: string) {
+  colorChange(event: IColorChangeEvent) {
     const color = this.lightArrayService.parseRgbColorFromString(event.color);
-    this.lightArrayFormGroup.get(`animations.${animationToApply}.color`).setValue(color);
+    this.lightArrayFormGroup.get(`color`).setValue(color);
   }
 
   matTabSelected(tabIndex: number) {
@@ -101,6 +67,10 @@ export class LightArrayComponent implements OnInit {
     } else if (tabIndex == 0) {
       this.updateDesiredState(this.lightArrayFormGroup.value);
     }
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 
 }

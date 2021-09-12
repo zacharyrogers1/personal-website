@@ -18,29 +18,11 @@ export interface IDeltaChanges {
 
 export interface ILightArrayState {
   activeAnimation: string,
+  color: RgbColor;
+  speed: number;
   animations: {
-    countdown: {
-      timeInSeconds: number
-    },
-    pingPong: {
-      speed: number,
-      color: RgbColor
-    },
-    unifiedRainbow: {
-      speed: number
-    },
-    twinkle: {
-      speed: number,
-      color: RgbColor
-    },
-    scanningStripe: {
-      speed: number,
-      color: RgbColor
-    },
     chasingLights: {
-      speed: number,
       numLitPixels: number,
-      color: RgbColor
     }
   };
 }
