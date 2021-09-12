@@ -10,6 +10,13 @@
     <form class="example-container" [formGroup]="lightArrayFormGroup">
       <mat-radio-group class="asCard" formControlName='activeAnimation'>
         <div formGroupName="animations">
+          <mat-card>
+            <mat-card-title>
+              <mat-radio-button value="off">
+                Off
+              </mat-radio-button>
+            </mat-card-title>
+          </mat-card>
           <mat-card formGroupName="chasingLights">
             <mat-card-title>
               <mat-radio-button value="chasingLights">
@@ -18,7 +25,7 @@
             </mat-card-title>
             <mat-card-content>
               Speed <mat-slider min="0" max="1" step="0.1" thumbLabel="true" formControlName="speed"></mat-slider>
-              Number Of Lit Pixels <mat-slider min="0" max="50" step="1" thumbLabel="true"
+              Number Of Lit Pixels <mat-slider min="0" max="400" step="1" thumbLabel="true"
                 formControlName="numLitPixels">
               </mat-slider>
               Color: <input [(colorPicker)]="chasingLightsColor" [style.background]="chasingLightsColor"
@@ -70,6 +77,18 @@
               Speed <mat-slider min="0" max="1" step="0.1" thumbLabel="true" formControlName="speed"></mat-slider>
               Color <input [(colorPicker)]="scanningStripeColor" [style.background]="scanningStripeColor" cpOutputFormat="rgba"
               cpAlphaChannel="disabled" (cpSliderDragEnd)="colorChange($event, 'scanningStripe')" />
+            </mat-card-content>
+          </mat-card>
+          <mat-card formGroupName="fillAndEmpty">
+            <mat-card-title>
+              <mat-radio-button value="fillAndEmpty">
+                Fill And Empty
+              </mat-radio-button>
+            </mat-card-title>
+            <mat-card-content>
+              Speed <mat-slider min="0" max="1" step="0.1" thumbLabel="true" formControlName="speed"></mat-slider>
+              Color <input [(colorPicker)]="fillAndEmptyColor" [style.background]="fillAndEmptyColor" cpOutputFormat="rgba"
+              cpAlphaChannel="disabled" (cpSliderDragEnd)="colorChange($event, 'fillAndEmpty')" />
             </mat-card-content>
           </mat-card>
           <mat-card formGroupName="countdown">
