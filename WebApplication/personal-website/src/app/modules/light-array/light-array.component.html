@@ -2,7 +2,7 @@
   <mat-card-title class="top-level-controls">
     Brightness <mat-slider min="0" max="1" step="0.1" thumbLabel="true" [formControl]="lightArrayFormGroup.controls.brightness">
     </mat-slider>
-    Color <input [(colorPicker)]="selectedColor" [style.background]="selectedColor" style="border: none;"
+    Color <input [(colorPicker)]="selectedColor" [style.background]="selectedColor" style="border: none; width: 30px;" cpWidth="230px"
     cpOutputFormat="rgba" cpAlphaChannel="disabled"
     (cpSliderDragEnd)="colorChange($event)" />
     Speed <mat-slider min="0" max="1" step="0.1" thumbLabel="true" [formControl]="lightArrayFormGroup.controls.speed"></mat-slider>
