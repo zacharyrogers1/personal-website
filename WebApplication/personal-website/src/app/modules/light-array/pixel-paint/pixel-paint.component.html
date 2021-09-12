@@ -5,8 +5,24 @@
   <div *ngIf="isFullScreen">
     <mat-card-title>
       Color
-      <input [(colorPicker)]="pixelPaintColor" [style.background]="pixelPaintColor" cpOutputFormat="rgba" cpWidth="auto"
-        cpAlphaChannel="disabled" />
+      <input  [(colorPicker)]="pixelPaintColor" [style.background]="pixelPaintColor" cpOutputFormat="rgba" cpWidth="auto"
+        cpAlphaChannel="disabled"
+        [cpCloseClickOutside]="true" 
+        [cpToggle]="true"
+        (colorPickerOpen)="runChangeDetection()"
+        (colorPickerClose)="runChangeDetection()"
+        (colorPickerChange)="runChangeDetection()"
+        (colorPickerCancel)="runChangeDetection()"
+        (colorPickerSelect)="runChangeDetection()"
+        (cpToggleChange)="runChangeDetection()"
+        (cpInputChange)="runChangeDetection()"
+        (cpSliderChange)="runChangeDetection()"
+        (cpSliderDragStart)="runChangeDetection()"
+        (cpSliderDragEnd)="runChangeDetection()"
+        (cpCmykColorChange)="runChangeDetection()"
+        (cpPresetColorsChange)="runChangeDetection()"
+        style="border: none;"
+        />
       <button button mat-raised-button id="fullscreenButton" (click)="toggleFullScreen()">Exit</button>
       <button button mat-raised-button (click)="clearScreen()">Clear Pixels</button>
     </mat-card-title>

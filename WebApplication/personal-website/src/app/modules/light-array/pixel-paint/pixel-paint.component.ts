@@ -61,7 +61,9 @@ export class PixelPaintComponent implements OnInit, OnDestroy, AfterViewInit {
         this.changeDetectorRef.detectChanges()
       });
     } else {
-      document.exitFullscreen();
+      document.exitFullscreen().then(() => {
+        this.changeDetectorRef.detectChanges()
+      });
     }
   }
 
@@ -89,6 +91,11 @@ export class PixelPaintComponent implements OnInit, OnDestroy, AfterViewInit {
       this.tilesToDisplay[i].color = 'rgb(0,0,0)';
     }
     this.mqttService.publishToPixelPaint(clearScreen);
+    this.changeDetectorRef.detectChanges();
+  }
+
+  runChangeDetection() {
+    this.changeDetectorRef.detectChanges();
   }
 
   ngOnDestroy() {
