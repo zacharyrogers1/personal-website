@@ -84,6 +84,7 @@ export class PixelPaintComponent implements OnInit, OnDestroy, AfterViewInit {
 
   touchTile(tileNumber: number) {
     this.tilesToDisplay[tileNumber].color = this.pixelPaintColor;
+    this.changeDetectorRef.detectChanges();
     this.publishToPixelPaint(tileNumber, this.pixelPaintColor);
   }
 
