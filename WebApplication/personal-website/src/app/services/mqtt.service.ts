@@ -34,14 +34,14 @@ export class MqttService {
     console.log("Current AmplifyPubSub", PubSub)
   }
 
-  getDesiredState(): Observable<ILightArrayState> {
+  getDesiredState(): Observable<any> {
     const returnedObservable: AsyncSubject<ILightArrayState> = new AsyncSubject();
     const getStateTopic = `$aws/things/${this.stringLightsThingName}/shadow/get`
     const stateResponseTopic = `$aws/things/${this.stringLightsThingName}/shadow/get/accepted`
 
     this.subscribeToTopic(stateResponseTopic).subscribe((stateDocument) => {
       console.log("The state document: ", stateDocument)
-      returnedObservable.next(stateDocument.value.state.desired);
+      returnedObservable.next(stateDocument.value.state);
       returnedObservable.complete();
     });
 
@@ -59,7 +59,7 @@ export class MqttService {
       {
         desired: partialDesiredState
       }
-    }
+    };
 
     const updateStateTopic: string = `$aws/things/${this.stringLightsThingName}/shadow/update`
     // const stateToString = JSON.stringify(change)
