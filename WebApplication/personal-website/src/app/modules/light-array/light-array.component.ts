@@ -69,7 +69,6 @@ export class LightArrayComponent implements OnInit, OnDestroy {
   }
 
   updateDesiredState(desiredState: Object) {
-    console.log('Emitting to AWS!!!')
     this.mqttService.updateDesiredState(desiredState);
   }
 

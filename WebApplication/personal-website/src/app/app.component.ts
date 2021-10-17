@@ -18,7 +18,7 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.authService.isCurrentUserLoggedIn().then((isUserLoggedIn) => {
+    this.authService.isAuthenticated().then((isUserLoggedIn) => {
       if (isUserLoggedIn) {
         this.mqttService.addPluggable();
       }

@@ -28,7 +28,7 @@ export class AuthService {
     return Auth.signOut()
   }
 
-  async isCurrentUserLoggedIn(): Promise<boolean> {
+  async isAuthenticated(): Promise<boolean> {
     let userIsLoggedIn:boolean;
     try {
       await Auth.currentAuthenticatedUser();
