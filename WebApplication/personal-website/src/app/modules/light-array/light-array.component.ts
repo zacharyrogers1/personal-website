@@ -59,7 +59,7 @@ export class LightArrayComponent implements OnInit, OnDestroy {
       })
     );
 
-    this.store$.select(lightArray_desired).pipe(filterEmpty(), take(1)).subscribe((desiredState) => {
+    this.store$.select(lightArray_desired).pipe(filterEmpty()).subscribe((desiredState) => {
       this.lightArrayFormGroup.patchValue(desiredState, {emitEvent: false});
 
       const selectedColor = desiredState.color;
