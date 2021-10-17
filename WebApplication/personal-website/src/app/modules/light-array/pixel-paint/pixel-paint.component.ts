@@ -3,7 +3,7 @@ import { fromEvent, Observable, Subject, Subscription } from 'rxjs';
 import { catchError, distinctUntilChanged, filter, map, tap } from 'rxjs/operators';
 import { MqttService } from 'src/app/services/mqtt.service';
 import { LightArrayService } from '../light-array.service';
-import { IColorTile, IPaintPixel } from '../types';
+import { IColorTile, IPaintPixel, RgbColor } from '../types';
 
 
 @Component({
@@ -90,14 +90,23 @@ export class PixelPaintComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   clearScreen() {
-    let clearScreen: IPaintPixel[] = [];
+    this.fillScreenWithColor([0,0,0])
+  }
+
+  fillScreenWithActiveColor() {
+    const activeColor = this.lightArrayService.parseRgbColorFromString(this.pixelPaintColor);
+    this.fillScreenWithColor(activeColor);
+  }
+
+  fillScreenWithColor(color: RgbColor) {
+    let screen: IPaintPixel[] = [];
     for (let i = 0; i < this.pixelCount; i++) {
       const coordinate = this.lightArrayService.parseCoordinate(this.xAxisLength, i);
-      const coordinateWithColor: IPaintPixel = { ...coordinate, color: [0, 0, 0] };
-      clearScreen.push(coordinateWithColor);
-      this.tilesToDisplay[i].color = 'rgb(0,0,0)';
+      const coordinateWithColor: IPaintPixel = { ...coordinate, color };
+      screen.push(coordinateWithColor);
+      this.tilesToDisplay[i].color = `rgb(${color[0]},${color[1]},${color[2]})`;
     }
-    this.mqttService.publishToPixelPaint(clearScreen);
+    this.mqttService.publishToPixelPaint(screen);
     this.changeDetectorRef.detectChanges();
   }
 

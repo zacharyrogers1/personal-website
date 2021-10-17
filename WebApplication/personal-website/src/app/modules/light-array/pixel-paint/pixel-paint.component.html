@@ -24,9 +24,10 @@
         (cpPresetColorsChange)="runChangeDetection()"
         style="border: none; width: 30px;"
         />
-      <button button mat-raised-button id="fullscreenButton" (click)="toggleFullScreen()">Exit</button>
-      <button button mat-raised-button (click)="clearScreen()">Clear Pixels</button>
-      <button button mat-raised-button (click)="rotate(90)">Rotate 90</button>
+      <button button mat-raised-button (click)="fillScreenWithActiveColor()">Fill</button>
+      <button button mat-raised-button class="float-right" id="fullscreenButton" (click)="toggleFullScreen()">Exit</button>
+      <button button mat-raised-button class="float-right" (click)="clearScreen()">Clear Pixels</button>
+      <button button mat-raised-button class="float-right" (click)="rotate(90)">Rotate 90</button>
     </mat-card-title>
     <mat-card-content>
       <mat-grid-list [cols]="xAxisLength" rowHeight="1:1" id="paintTiles" (pan)="panOverTile($event)">
