@@ -1,2 +1,2 @@
-variable "LwtPublishTopic" {}
+variable "LwtTopic" {}
 variable "LwtRepublishTopic" {}

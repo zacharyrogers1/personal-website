@@ -16,3 +16,9 @@ provider "aws" {
 module "cognito" {
   source = "../../../modules/cognitoIoTPolicy"
 }
+
+module "IoTRules" {
+  source = "../../../modules/IoTRules"
+  LwtTopic = "lastWillTestament/stringLights"
+  LwtRepublishTopic = "$aws/things/stringLights/shadow/update"
+}
