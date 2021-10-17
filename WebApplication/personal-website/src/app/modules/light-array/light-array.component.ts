@@ -5,10 +5,11 @@ import { LightArrayService } from './light-array.service';
 import { IColorChangeEvent, IDeltaChanges, ILightArrayDesiredState, RgbScreen } from './types';
 import { Subscription, timer } from 'rxjs';
 import { Store } from '@ngrx/store';
-import { FetchState } from 'src/app/store/actions';
+import { FetchState, HandleShadowUpdateChange } from 'src/app/store/actions';
 import { lightArray_desired, lightArray_reported } from 'src/app/store/reducers';
 import { filterEmpty } from 'src/app/store/operators';
 import { map, take } from 'rxjs/operators';
+import { ZenObservable } from 'zen-observable-ts';
 
 @Component({
   selector: 'app-light-array',
@@ -30,6 +31,7 @@ export class LightArrayComponent implements OnInit, OnDestroy {
   });
   selectedColor = 'rgb(0,0,0)';
   subscriptions: Subscription[] = [];
+  zenSubscription: ZenObservable.Subscription;
   deviceConnectionStatus$ = this.store$.select(lightArray_reported).pipe(
     map((reportedState) => {
       if(reportedState?.connected) {
@@ -48,6 +50,7 @@ export class LightArrayComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.store$.dispatch(new FetchState());
+    this.startUpdateListener();
 
     this.subscriptions.push(
       this.lightArrayFormGroup.valueChanges.subscribe((desiredState: ILightArrayDesiredState) => {
@@ -84,9 +87,17 @@ export class LightArrayComponent implements OnInit, OnDestroy {
     }
   }
 
+  startUpdateListener() {
+    this.zenSubscription = this.mqttService.subscribeToTopic('$aws/things/stringLights/shadow/update').subscribe((updates:IDeltaChanges) => {
+      this.store$.dispatch(new HandleShadowUpdateChange(updates.value.state))
+    });
+  }
+
   ngOnDestroy() {
     this.subscriptions.forEach(sub => sub.unsubscribe());
+    this.zenSubscription.unsubscribe();
   }
+
 
 }
 

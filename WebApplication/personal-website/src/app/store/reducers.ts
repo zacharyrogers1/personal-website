@@ -24,3 +24,4 @@ export function lightArrayReducer(state: ILightArrayState, action: IPayloadActio
 
 export const lightArray_desired = (state: IAppState) => state.lightArray.desired;
 export const lightArray_reported = (state: IAppState) => state.lightArray.reported;
+export const lightArray = (state: IAppState) => state.lightArray;
