@@ -1,9 +1,9 @@
 import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { fromEvent, Observable, Subject, Subscription } from 'rxjs';
-import { catchError, debounceTime, distinctUntilChanged, filter, map, tap } from 'rxjs/operators';
+import { catchError, distinctUntilChanged, filter, map, tap } from 'rxjs/operators';
 import { MqttService } from 'src/app/services/mqtt.service';
 import { LightArrayService } from '../light-array.service';
-import { IColorTile, IPaintPixel, RgbScreen } from '../types';
+import { IColorTile, IPaintPixel } from '../types';
 
 
 @Component({
@@ -21,6 +21,7 @@ export class PixelPaintComponent implements OnInit, OnDestroy, AfterViewInit {
   subscriptions: Subscription[] = [];
   isFullScreen: boolean = false;
   colorStream: Subject<{ x: number, y: number }> = new Subject();
+  currentRotation: number = 0;
   colorStreamEffects$: Observable<any> = this.colorStream.pipe(
     map(({ x, y }) => document.elementsFromPoint(x, y)[1].id),//THe 0th element is a mat figure and we need the mat-tile element),
     filter((id: string) => id && (id !== 'paintTiles')),
@@ -34,17 +35,7 @@ export class PixelPaintComponent implements OnInit, OnDestroy, AfterViewInit {
   );
   resizePixelPaint$: Observable<any> = fromEvent(window, 'resize').pipe(
     tap((event) => {
-      const paintContainer = document.getElementById('paintTiles');
-      if (paintContainer) {
-        const matCardMarginSize = 16;
-        const matCardTitleHeight = 31;
-        const matCardTitlePadding = 8;
-        const actualWidth: number = event.target.innerWidth - (matCardMarginSize * 2)
-        const actualHeight: number = event.target.innerHeight - (matCardMarginSize * 2) - matCardTitleHeight - matCardTitlePadding
-        const smallerValue: number = actualWidth >= actualHeight ? actualHeight : actualWidth;
-        paintContainer.style.height = smallerValue + 'px';
-        paintContainer.style.width = smallerValue + 'px';
-      }
+      this.resizePixelPaint();
     })
   )
 
@@ -63,7 +54,7 @@ export class PixelPaintComponent implements OnInit, OnDestroy, AfterViewInit {
 
     this.subscriptions.push(this.resizePixelPaint$.subscribe());
   }
-
+  
   ngAfterViewInit() {
     this.changeDetectorRef.detectChanges()
   }
@@ -112,6 +103,27 @@ export class PixelPaintComponent implements OnInit, OnDestroy, AfterViewInit {
 
   runChangeDetection() {
     this.changeDetectorRef.detectChanges();
+  }
+
+  rotate(degrees: number) {
+    this.currentRotation = this.currentRotation + degrees;
+    const paintTiles = document.getElementById("paintTiles");
+    paintTiles.style.transform = `rotate(${this.currentRotation}deg)`;
+    this.resizePixelPaint();
+  }
+
+  resizePixelPaint() {
+    const paintContainer = document.getElementById('paintTiles');
+    if (paintContainer) {
+      const matCardMarginSize = 16;
+      const matCardTitleHeight = 31;
+      const matCardTitlePadding = 8;
+      const actualWidth: number = window.innerWidth - (matCardMarginSize * 2)
+      const actualHeight: number = window.innerHeight - (matCardMarginSize * 2) - matCardTitleHeight - matCardTitlePadding
+      const smallerValue: number = actualWidth >= actualHeight ? actualHeight : actualWidth;
+      paintContainer.style.height = smallerValue + 'px';
+      paintContainer.style.width = smallerValue + 'px';
+    }
   }
 
   ngOnDestroy() {
