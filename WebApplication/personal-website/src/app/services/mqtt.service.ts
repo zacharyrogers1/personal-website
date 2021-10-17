@@ -41,7 +41,7 @@ export class MqttService {
 
     this.subscribeToTopic(stateResponseTopic).subscribe((stateDocument) => {
       console.log("The state document: ", stateDocument)
-      returnedObservable.next(stateDocument.value.state);
+      returnedObservable.next({desired: stateDocument.value.state.desired, reported: stateDocument.value.state.reported});
       returnedObservable.complete();
     });
 

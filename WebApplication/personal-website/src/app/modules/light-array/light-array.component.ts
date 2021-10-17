@@ -3,7 +3,9 @@ import { MqttService } from 'src/app/services/mqtt.service';
 import { FormControl, FormGroup } from '@angular/forms';
 import { LightArrayService } from './light-array.service';
 import { IColorChangeEvent, IDeltaChanges, ILightArrayDesiredState, RgbScreen } from './types';
-import { Subscription } from 'rxjs';
+import { Subscription, timer } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { FetchState } from 'src/app/store/actions';
 
 @Component({
   selector: 'app-light-array',
@@ -29,14 +31,16 @@ export class LightArrayComponent implements OnInit, OnDestroy {
 
   constructor(
     private mqttService: MqttService,
-    private lightArrayService: LightArrayService
+    private lightArrayService: LightArrayService,
+    private store$: Store
   ) { }
 
   ngOnInit() {
+    this.store$.dispatch(new FetchState());
 
     this.subscriptions.push(
       this.mqttService.getLightArrayState().subscribe((stateDoc) => {
-        console.log('component state doc: ', stateDoc);
+        // console.log('component state doc: ', stateDoc);
         this.lightArrayFormGroup.setValue(stateDoc.desired);
 
         const selectedColor = stateDoc.desired.color;
@@ -46,13 +50,12 @@ export class LightArrayComponent implements OnInit, OnDestroy {
 
     this.subscriptions.push(
       this.lightArrayFormGroup.valueChanges.subscribe((desiredState: ILightArrayDesiredState) => {
-        console.log('Value of lightArrayFormGroup: ', desiredState);
+        // console.log('Value of lightArrayFormGroup: ', desiredState);
         this.updateDesiredState(desiredState);
       })
     );
 
     this.mqttService.subscribeToTopic('$aws/things/stringLights/shadow/update').subscribe((updates:IDeltaChanges) => {
-      console.log('update delta topic', updates)
       if(updates?.value?.state?.reported?.connected === true){
         this.deviceConnectionStatus.color = 'primary';
         this.deviceConnectionStatus.statusText = 'Connected'
@@ -61,6 +64,15 @@ export class LightArrayComponent implements OnInit, OnDestroy {
         this.deviceConnectionStatus.statusText = 'Disconnected'
       }
     })
+
+    this.store$.select('lightArrayState').subscribe((lightArrayState) => {
+      console.log('store light array state', lightArrayState)
+    });
+
+    // timer(10000).pipe(take(1)).subscribe(() => {
+    //   console.log('starting to patch value');
+    //   this.lightArrayFormGroup.get('activeAnimation').patchValue('twinkle', {emitEvent: false})
+    // })
   }
 
   updateDesiredState(desiredState: Object) {

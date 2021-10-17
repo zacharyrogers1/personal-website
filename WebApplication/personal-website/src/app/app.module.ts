@@ -9,6 +9,10 @@ import { AmplifyUIAngularModule } from '@aws-amplify/ui-angular';
 import { BlindsModule } from './modules/blinds/blinds.module';
 import { RouterModule, Routes } from '@angular/router';
 import { Amplify } from '@aws-amplify/core';
+import { StoreModule } from '@ngrx/store';
+import { initialAppState, reducers } from './store/initialState';
+import { EffectsModule } from '@ngrx/effects';
+import { LightArrayEffects } from './store/effects';
 
 Amplify.configure(environment.awsConfig);
 
@@ -28,6 +32,8 @@ const routes: Routes = [
     BrowserAnimationsModule,
     AmplifyUIAngularModule,
     BlindsModule,
+    StoreModule.forRoot(reducers, {initialState: initialAppState}),
+    EffectsModule.forRoot([LightArrayEffects]),
   ],
   providers: [],
   bootstrap: [AppComponent]
