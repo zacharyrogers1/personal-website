@@ -6,6 +6,8 @@ import { IColorChangeEvent, IDeltaChanges, ILightArrayDesiredState, RgbScreen } 
 import { Subscription, timer } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { FetchState } from 'src/app/store/actions';
+import { lightArray_desired } from 'src/app/store/reducers';
+import { filterEmpty } from 'src/app/store/operators';
 
 @Component({
   selector: 'app-light-array',
@@ -32,21 +34,11 @@ export class LightArrayComponent implements OnInit, OnDestroy {
   constructor(
     private mqttService: MqttService,
     private lightArrayService: LightArrayService,
-    private store$: Store
+    private store$: Store<any>
   ) { }
 
   ngOnInit() {
     this.store$.dispatch(new FetchState());
-
-    this.subscriptions.push(
-      this.mqttService.getLightArrayState().subscribe((stateDoc) => {
-        // console.log('component state doc: ', stateDoc);
-        this.lightArrayFormGroup.setValue(stateDoc.desired);
-
-        const selectedColor = stateDoc.desired.color;
-        this.selectedColor = `rgb(${selectedColor[0]}, ${selectedColor[1]}, ${selectedColor[2]})`;
-      })
-    );
 
     this.subscriptions.push(
       this.lightArrayFormGroup.valueChanges.subscribe((desiredState: ILightArrayDesiredState) => {
@@ -65,8 +57,12 @@ export class LightArrayComponent implements OnInit, OnDestroy {
       }
     })
 
-    this.store$.select('lightArrayState').subscribe((lightArrayState) => {
-      console.log('store light array state', lightArrayState)
+    this.store$.select(lightArray_desired).pipe(filterEmpty()).subscribe((desiredState) => {
+      console.log('store light array state', desiredState)
+      this.lightArrayFormGroup.setValue(desiredState);
+
+      const selectedColor = desiredState.color;
+      this.selectedColor = `rgb(${selectedColor[0]}, ${selectedColor[1]}, ${selectedColor[2]})`;
     });
 
     // timer(10000).pipe(take(1)).subscribe(() => {

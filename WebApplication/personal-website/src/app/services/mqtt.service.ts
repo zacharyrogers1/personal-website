@@ -39,10 +39,11 @@ export class MqttService {
     const getStateTopic = `$aws/things/${this.stringLightsThingName}/shadow/get`
     const stateResponseTopic = `$aws/things/${this.stringLightsThingName}/shadow/get/accepted`
 
-    this.subscribeToTopic(stateResponseTopic).subscribe((stateDocument) => {
+    const zenSubscription = this.subscribeToTopic(stateResponseTopic).subscribe((stateDocument) => {
       console.log("The state document: ", stateDocument)
       returnedObservable.next({desired: stateDocument.value.state.desired, reported: stateDocument.value.state.reported});
       returnedObservable.complete();
+      zenSubscription.unsubscribe();   // Need to cleanup zen-observable subscription after subscribing 
     });
 
     setTimeout(() => {

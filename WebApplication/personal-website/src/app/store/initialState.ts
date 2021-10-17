@@ -3,16 +3,16 @@ import { ILightArrayState } from "src/app/modules/light-array/types";
 import { lightArrayReducer } from "./reducers";
 
 export interface IAppState {
-    lightArrayState: ILightArrayState
+    lightArray: ILightArrayState
 }
 
 export const initialAppState: IAppState = {
-    lightArrayState: {
+    lightArray: {
         desired: undefined,
         reported: undefined
     }
 }
 
 export const reducers: ActionReducerMap<IAppState> = {
-    lightArrayState: lightArrayReducer
+    lightArray: lightArrayReducer
 };

@@ -1,4 +1,4 @@
-import { Action, ActionReducerMap } from "@ngrx/store";
+import { Action } from "@ngrx/store";
 import { ILightArrayState } from "src/app/modules/light-array/types";
 import { SET_LIGHT_ARRAY_DESIRED_STATE, SET_LIGHT_ARRAY_STATE } from "./actions";
 import { IAppState } from "./initialState";
@@ -21,3 +21,5 @@ export function lightArrayReducer(state: ILightArrayState, action: IPayloadActio
             return state
     }
 }
+
+export const lightArray_desired = (state: IAppState) => state.lightArray.desired;
