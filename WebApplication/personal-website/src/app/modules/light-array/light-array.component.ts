@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MqttService } from 'src/app/services/mqtt.service';
 import { FormControl, FormGroup } from '@angular/forms';
 import { LightArrayService } from './light-array.service';
-import { IColorChangeEvent, ILightArrayDesiredState, RgbScreen } from './types';
+import { IColorChangeEvent, IDeltaChanges, ILightArrayDesiredState, RgbScreen } from './types';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -51,8 +51,15 @@ export class LightArrayComponent implements OnInit, OnDestroy {
       })
     );
 
-    this.mqttService.subscribeToTopic('$aws/things/stringLights/shadow/update').subscribe((updates) => {
+    this.mqttService.subscribeToTopic('$aws/things/stringLights/shadow/update').subscribe((updates:IDeltaChanges) => {
       console.log('update delta topic', updates)
+      if(updates?.value?.state?.reported?.connected === true){
+        this.deviceConnectionStatus.color = 'primary';
+        this.deviceConnectionStatus.statusText = 'Connected'
+      } else if(updates?.value?.state?.reported?.connected === false) {
+        this.deviceConnectionStatus.color = 'warn';
+        this.deviceConnectionStatus.statusText = 'Disconnected'
+      }
     })
   }
 

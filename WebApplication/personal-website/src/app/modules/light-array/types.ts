@@ -9,7 +9,7 @@ export interface IDeltaChanges {
   provider: AWSIoTProvider
   value: {
     metadata: Object
-    state: ILightArrayDesiredState
+    state: Partial<ILightArrayState>
     timestamp: number
     version: number
     'Symbol(topic)': string
