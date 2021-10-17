@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { AsyncSubject, Observable } from 'rxjs';
-import { ILightArrayState, IPaintPixel, IPixelPaintUpdate, RgbScreen } from '../modules/light-array/types';
+import { ILightArrayDesiredState, ILightArrayState, IPaintPixel, IPixelPaintUpdate, RgbScreen } from '../modules/light-array/types';
 import PubSub, { AWSIoTProvider } from '@aws-amplify/pubsub';
 
 
@@ -34,7 +34,7 @@ export class MqttService {
     console.log("Current AmplifyPubSub", PubSub)
   }
 
-  getDesiredState(): Observable<any> {
+  getLightArrayState(): Observable<ILightArrayState> {
     const returnedObservable: AsyncSubject<ILightArrayState> = new AsyncSubject();
     const getStateTopic = `$aws/things/${this.stringLightsThingName}/shadow/get`
     const stateResponseTopic = `$aws/things/${this.stringLightsThingName}/shadow/get/accepted`
@@ -62,7 +62,6 @@ export class MqttService {
     };
 
     const updateStateTopic: string = `$aws/things/${this.stringLightsThingName}/shadow/update`
-    // const stateToString = JSON.stringify(change)
 
     this.publishToTopic(updateStateTopic, desiredUpdate);
   }

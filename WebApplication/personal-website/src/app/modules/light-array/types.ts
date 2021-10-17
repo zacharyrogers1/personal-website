@@ -9,15 +9,16 @@ export interface IDeltaChanges {
   provider: AWSIoTProvider
   value: {
     metadata: Object
-    state: ILightArrayState
+    state: ILightArrayDesiredState
     timestamp: number
     version: number
     'Symbol(topic)': string
   }
 }
 
-export interface ILightArrayState {
-  activeAnimation: string,
+export interface ILightArrayDesiredState {
+  activeAnimation: string;
+  brightness: number;
   color: RgbColor;
   speed: number;
   animations: {
@@ -25,6 +26,17 @@ export interface ILightArrayState {
       numLitPixels: number,
     }
   };
+}
+
+export interface ILightArrayReportedState extends ILightArrayDesiredState {
+  connected: boolean;
+  numPixels: number;
+  xAxisLength: number;
+}
+
+export interface ILightArrayState {
+  desired: ILightArrayDesiredState;
+  reported: ILightArrayReportedState;
 }
 
 export type RgbScreen = RgbColor[][]

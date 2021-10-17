@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MqttService } from 'src/app/services/mqtt.service';
 import { FormControl, FormGroup } from '@angular/forms';
 import { LightArrayService } from './light-array.service';
-import { IColorChangeEvent, ILightArrayState, RgbScreen } from './types';
+import { IColorChangeEvent, ILightArrayDesiredState, RgbScreen } from './types';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -34,17 +34,17 @@ export class LightArrayComponent implements OnInit, OnDestroy {
   ngOnInit() {
 
     this.subscriptions.push(
-      this.mqttService.getDesiredState().subscribe((stateDoc: ILightArrayState) => {
+      this.mqttService.getLightArrayState().subscribe((stateDoc) => {
         console.log('component state doc: ', stateDoc);
-        this.lightArrayFormGroup.setValue(stateDoc);
+        this.lightArrayFormGroup.setValue(stateDoc.desired);
 
-        const selectedColor = stateDoc.color;
+        const selectedColor = stateDoc.desired.color;
         this.selectedColor = `rgb(${selectedColor[0]}, ${selectedColor[1]}, ${selectedColor[2]})`;
       })
     );
 
     this.subscriptions.push(
-      this.lightArrayFormGroup.valueChanges.subscribe((desiredState: ILightArrayState) => {
+      this.lightArrayFormGroup.valueChanges.subscribe((desiredState: ILightArrayDesiredState) => {
         console.log('Value of lightArrayFormGroup: ', desiredState);
         this.updateDesiredState(desiredState);
       })
