@@ -3,13 +3,16 @@
     Brightness <mat-slider min="0" max="1" step="0.1" thumbLabel="true"
       [formControl]="lightArrayFormGroup.controls.brightness">
     </mat-slider>
-    Color <input [(colorPicker)]="selectedColor" [style.background]="selectedColor" style="border: none; width: 30px;"
+    Color <input id="light-array-color-input" [(colorPicker)]="selectedColor" [style.background-color]="selectedColor"
       cpWidth="230px" cpOutputFormat="rgba" cpAlphaChannel="disabled" (cpSliderDragEnd)="colorChange($event)" />
     Speed <mat-slider min="0" max="1" step="0.1" thumbLabel="true" [formControl]="lightArrayFormGroup.controls.speed">
     </mat-slider>
-    <mat-chip selected [color]="deviceConnectionStatus.color">
-      {{deviceConnectionStatus.statusText}}
-    </mat-chip>
+    <span class="spacerSpan"></span>
+    <mat-chip-list>
+      <mat-chip selected [color]="deviceConnectionStatus.color">
+        {{deviceConnectionStatus.statusText}}
+      </mat-chip>
+    </mat-chip-list>
   </mat-card-title>
 </mat-card>
 

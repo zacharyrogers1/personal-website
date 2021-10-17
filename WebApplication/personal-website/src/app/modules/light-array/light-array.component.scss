@@ -7,3 +7,27 @@
     flex-direction: row;
     flex-wrap: wrap;
 }
+
+mat-card-title {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    flex-wrap: wrap;
+}
+
+#light-array-color-input{
+    padding: 8px;
+    border: none; 
+    width: 40px; 
+    height: 40px;
+    background-clip: content-box;
+}
+
+mat-chip-list {
+    justify-content: right;
+}
+
+.spacerSpan {
+    flex: 1 1 auto;
+}

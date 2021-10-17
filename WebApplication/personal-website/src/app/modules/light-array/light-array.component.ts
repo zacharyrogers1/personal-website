@@ -25,6 +25,7 @@ export class LightArrayComponent implements OnInit, OnDestroy {
   });
   selectedColor = 'rgb(0,0,0)';
   subscriptions: Subscription[] = [];
+  deviceConnectionStatus = {color: 'warn', statusText: 'Disconnected'}
 
   constructor(
     private mqttService: MqttService,
@@ -49,6 +50,10 @@ export class LightArrayComponent implements OnInit, OnDestroy {
         this.updateDesiredState(desiredState);
       })
     );
+
+    this.mqttService.subscribeToTopic('$aws/things/stringLights/shadow/update').subscribe((updates) => {
+      console.log('update delta topic', updates)
+    })
   }
 
   updateDesiredState(desiredState: Object) {
