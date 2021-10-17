@@ -9,8 +9,8 @@
     </mat-slider>
     <span class="spacerSpan"></span>
     <mat-chip-list>
-      <mat-chip selected [color]="deviceConnectionStatus.color">
-        {{deviceConnectionStatus.statusText}}
+      <mat-chip selected [color]="(deviceConnectionStatus$ | async).color">
+        {{(deviceConnectionStatus$ | async).statusText}}
       </mat-chip>
     </mat-chip-list>
   </mat-card-title>

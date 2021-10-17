@@ -27,7 +27,6 @@ export class MqttService {
       aws_pubsub_region: environment.awsConfig.Auth.region,
       aws_pubsub_endpoint: `wss://${environment.awsConfig.iot.endpoint}/mqtt`,
     }));
-    console.log("AmplifyPubsub", PubSub);
   }
 
   printPubSub() {

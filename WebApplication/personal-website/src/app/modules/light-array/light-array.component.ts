@@ -6,8 +6,9 @@ import { IColorChangeEvent, IDeltaChanges, ILightArrayDesiredState, RgbScreen } 
 import { Subscription, timer } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { FetchState } from 'src/app/store/actions';
-import { lightArray_desired } from 'src/app/store/reducers';
+import { lightArray_desired, lightArray_reported } from 'src/app/store/reducers';
 import { filterEmpty } from 'src/app/store/operators';
+import { map, take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-light-array',
@@ -29,7 +30,15 @@ export class LightArrayComponent implements OnInit, OnDestroy {
   });
   selectedColor = 'rgb(0,0,0)';
   subscriptions: Subscription[] = [];
-  deviceConnectionStatus = {color: 'warn', statusText: 'Disconnected'}
+  deviceConnectionStatus$ = this.store$.select(lightArray_reported).pipe(
+    map((reportedState) => {
+      if(reportedState?.connected) {
+        return {color: 'primary', statusText: 'Connected'}
+      } else {
+        return {color: 'warn', statusText: 'Disconnected'}
+      }
+    })
+  )
 
   constructor(
     private mqttService: MqttService,
@@ -47,31 +56,17 @@ export class LightArrayComponent implements OnInit, OnDestroy {
       })
     );
 
-    this.mqttService.subscribeToTopic('$aws/things/stringLights/shadow/update').subscribe((updates:IDeltaChanges) => {
-      if(updates?.value?.state?.reported?.connected === true){
-        this.deviceConnectionStatus.color = 'primary';
-        this.deviceConnectionStatus.statusText = 'Connected'
-      } else if(updates?.value?.state?.reported?.connected === false) {
-        this.deviceConnectionStatus.color = 'warn';
-        this.deviceConnectionStatus.statusText = 'Disconnected'
-      }
-    })
-
-    this.store$.select(lightArray_desired).pipe(filterEmpty()).subscribe((desiredState) => {
-      console.log('store light array state', desiredState)
-      this.lightArrayFormGroup.setValue(desiredState);
+    this.store$.select(lightArray_desired).pipe(filterEmpty(), take(1)).subscribe((desiredState) => {
+      this.lightArrayFormGroup.patchValue(desiredState, {emitEvent: false});
 
       const selectedColor = desiredState.color;
       this.selectedColor = `rgb(${selectedColor[0]}, ${selectedColor[1]}, ${selectedColor[2]})`;
     });
 
-    // timer(10000).pipe(take(1)).subscribe(() => {
-    //   console.log('starting to patch value');
-    //   this.lightArrayFormGroup.get('activeAnimation').patchValue('twinkle', {emitEvent: false})
-    // })
   }
 
   updateDesiredState(desiredState: Object) {
+    console.log('Emitting to AWS!!!')
     this.mqttService.updateDesiredState(desiredState);
   }
 
