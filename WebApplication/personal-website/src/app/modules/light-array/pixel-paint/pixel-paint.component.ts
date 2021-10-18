@@ -54,7 +54,7 @@ export class PixelPaintComponent implements OnInit, OnDestroy, AfterViewInit {
 
     this.subscriptions.push(this.resizePixelPaint$.subscribe());
   }
-  
+
   ngAfterViewInit() {
     this.changeDetectorRef.detectChanges()
   }
@@ -114,11 +114,16 @@ export class PixelPaintComponent implements OnInit, OnDestroy, AfterViewInit {
     this.changeDetectorRef.detectChanges();
   }
 
-  rotate(degrees: number) {
+  private rotate(degrees: number) {
     this.currentRotation = this.currentRotation + degrees;
     const paintTiles = document.getElementById("paintTiles");
     paintTiles.style.transform = `rotate(${this.currentRotation}deg)`;
     this.resizePixelPaint();
+  }
+
+  mirrorVertical() {
+    const paintTiles = document.getElementById("paintTiles");
+    paintTiles.style.transform = `scale(1,-1)`;
   }
 
   resizePixelPaint() {

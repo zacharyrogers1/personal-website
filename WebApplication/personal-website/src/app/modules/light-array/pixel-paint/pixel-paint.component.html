@@ -7,7 +7,7 @@
       Color
       <input  [(colorPicker)]="pixelPaintColor" [style.background]="pixelPaintColor" cpOutputFormat="rgba" cpWidth="auto"
         cpAlphaChannel="disabled"
-        [cpCloseClickOutside]="true" 
+        [cpCloseClickOutside]="true"
         [cpToggle]="true"
         cpWidth="230px"
         (colorPickerOpen)="runChangeDetection()"
@@ -27,11 +27,11 @@
       <button button mat-raised-button (click)="fillScreenWithActiveColor()">Fill</button>
       <button button mat-raised-button class="float-right" id="fullscreenButton" (click)="toggleFullScreen()">Exit</button>
       <button button mat-raised-button class="float-right" (click)="clearScreen()">Clear Pixels</button>
-      <button button mat-raised-button class="float-right" (click)="rotate(90)">Rotate 90</button>
+      <button button mat-raised-button class="float-right" (click)="mirrorVertical()">Mirror Vertical</button>
     </mat-card-title>
     <mat-card-content>
       <mat-grid-list [cols]="xAxisLength" rowHeight="1:1" id="paintTiles" (pan)="panOverTile($event)">
-        <mat-grid-tile *ngFor="let tile of tilesToDisplay" [style.background]="tile.color" 
+        <mat-grid-tile *ngFor="let tile of tilesToDisplay" [style.background]="tile.color"
           (click)="touchTile(tile.index)" [id]="tile.index">
         </mat-grid-tile>
       </mat-grid-list>
