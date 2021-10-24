@@ -26,6 +26,7 @@ export class LightArrayComponent implements OnInit, OnDestroy {
     animations: new FormGroup({
       chasingLights: new FormGroup({
         numLitPixels: new FormControl(3),
+        chaserCount: new FormControl(1),
       }),
     })
   });

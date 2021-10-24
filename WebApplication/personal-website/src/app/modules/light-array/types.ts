@@ -24,6 +24,7 @@ export interface ILightArrayDesiredState {
   animations: {
     chasingLights: {
       numLitPixels: number,
+      chaserCount: number,
     }
   };
 }
@@ -44,7 +45,7 @@ export type RgbScreen = RgbColor[][]
 export interface IColorTile {
   displayName: string;
   index: number;
-  color: string
+  color: string;
 }
 
 export interface IPixelPaintUpdate {
