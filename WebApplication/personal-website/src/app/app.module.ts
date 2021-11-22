@@ -13,6 +13,7 @@ import { StoreModule } from '@ngrx/store';
 import { initialAppState, reducers } from './store/initialState';
 import { EffectsModule } from '@ngrx/effects';
 import { LightArrayEffects } from './store/effects';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
 Amplify.configure(environment.awsConfig);
 
@@ -34,6 +35,7 @@ const routes: Routes = [
     BlindsModule,
     StoreModule.forRoot(reducers, {initialState: initialAppState}),
     EffectsModule.forRoot([LightArrayEffects]),
+    StoreDevtoolsModule.instrument({maxAge: 100}),
   ],
   providers: [],
   bootstrap: [AppComponent]

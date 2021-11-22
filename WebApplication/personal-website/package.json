@@ -27,6 +27,7 @@
     "@ng-bootstrap/ng-bootstrap": "^10.0.0",
     "@ngrx/effects": "^12.5.0",
     "@ngrx/store": "^12.5.0",
+    "@ngrx/store-devtools": "^12.5.0",
     "@types/uuid": "^3.4.7",
     "aws-amplify": "^4.2.5",
     "bootstrap": "^4.5.0",

@@ -1,18 +1,70 @@
-<mat-accordion>
-    <mat-expansion-panel>
-        <mat-expansion-panel-header>
-            <mat-panel-title>
-                Garage Door Opener
-            </mat-panel-title>
-        </mat-expansion-panel-header>
-        <p>This is the primary content of the panel.</p>
-    </mat-expansion-panel>
-    <mat-expansion-panel>
-        <mat-expansion-panel-header>
-            <mat-panel-title>
-                Second Thing
-            </mat-panel-title>
-        </mat-expansion-panel-header>
-        <p>The content</p>
-    </mat-expansion-panel>
-</mat-accordion>
+<div class="project-showcase-container">
+    <mat-card>
+        <mat-card-header>
+            <mat-card-title>Rapid Geometry Generation</mat-card-title>
+            <mat-card-subtitle>Procedural generation of rocket engine geometry</mat-card-subtitle>
+        </mat-card-header>
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/oDPUARUQ4MM" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <mat-card-content>
+            <p>
+                Professional project that I led back when I was working at a startup which specialized in 3D printing rocket engines. 3D printing within the rocket industry has 
+                allowed the design of a rocket engines to shift from what was possible to manufacture to what geometry is optimal. In this space fractal manifolds, regneratively cooled chambers, 
+                and single piece rocket engines were now all possible but we needed a better way to explore the design space more rapidly. To explore more rapidly, I modeled a number of rocket
+                engine components using scripts as opposed to CAD models. By paramaterizing the geometry we were able to generate thousands of models immediately and run Fluid simulations on
+                the generated models to find optimal geometries before even going to the printer. The fractal fluid manifold was an ideal way to split fluid from a single source into many injector 
+                points by easing the change in fluid direction and not using hard right angles. The script displayed was capable of plumbing any points given on an x-y plane and creating a fractal
+                geometry that minimized pressure drop and energy loss due to turbulent flow. The geometry on display was plumbing 64 injector outlets and would work for any randomized coordinates
+                so long as the outlets did not overlap. The 64 outlet areas all added up to the area of the inlet to maintain cross-sectional area. 
+            </p>
+            <a href="https://github.com/zacharyrogers1/ScriptedGeometry">GitHub Repository</a>
+        </mat-card-content>
+    </mat-card>
+    <mat-card>
+        <mat-card-header>
+            <mat-card-title>Automated Garage Door Opener</mat-card-title>
+            <mat-card-subtitle>IoT garage door opener triggered by text message</mat-card-subtitle>
+        </mat-card-header>
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/XOH0nxZ3FGM" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <mat-card-content>
+            <p>
+                A quick IoT device project which opened/closed a garage door and could check to see how many spots were available. The brains of the operation was a Raspberry Pi running
+                as an AWS IoT device. Connected to the the raspberry pi were two ultra sonics sensors which were used to sense the availablity of the parking spots and a line to trigger 
+                the garage door opener button. We received a static phone number from AWS Pinpoint which we could send text messages to. These text messages kicked off a python lambda 
+                that would respond to the sender with a message as well as send commands to the garage door IoT device. 
+            </p>
+        </mat-card-content>
+    </mat-card>
+    <mat-card>
+        <mat-card-header>
+            <mat-card-title>Personal Website</mat-card-title>
+            <mat-card-subtitle>You are Looking At It!</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+            <p>
+                I can talk about my website or you can take a look around...
+            </p>
+            <p>
+                This is my own personal website that I tinker with every now and then. As you might have noticed my strength is not in front end design. I use this website 
+                to tinker around with new web technologies, talk about projects, and make fun stuff. As for the nuts and bolts, the website is a static Angular website that is hosted on
+                AWS Cloudfront. There are pieces of my website which require authentication such as the light Array, the authentication is handled via AWS Cognito. For the Light Array project
+                the browser communicates with AWS IoT over websockets once authenticated. IoT/Authentication was integrated into the Angular application using aws-amplify. All of the infrastructure
+                for the site was created and deployed using terraform(Cognito, cloudfront, Route 53 domain, s3 buckets, blah, blah, blah). I work on this site sparingly and only for fun
+                so if you see something half complete just know that I am working on it. If you happen to hack my auth system, please don't turn on my lighs... I pay for those.
+                If you are interested in how any of the code/infrastructure works feel free to check out the source code yourself! 
+            </p>
+        </mat-card-content>
+        <a href="https://github.com/zacharyrogers1/personal-website">GitHub Repository</a>
+    </mat-card>
+    <mat-card>
+        <mat-card-header>
+            <mat-card-title>Light Array</mat-card-title>
+            <mat-card-subtitle>IoT Pixel Display</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+            <p>
+                To be continued.
+            </p>
+        </mat-card-content>
+        <a href="https://github.com/zacharyrogers1/lightSculptures">GitHub Repository</a>
+    </mat-card>
+</div>
