@@ -18,6 +18,7 @@ provider:
   region: ${opt:region, 'us-east-1'}
   stackName: ${self:service}-${self:provider.stage}
   timeout: 29
+  profile: ZachTerraform
   apiGateway:
     shouldStartNameWithService: true
       

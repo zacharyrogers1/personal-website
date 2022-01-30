@@ -15,7 +15,7 @@ export class SomeLambda {
 
     public async executeSomeLambda(event: APIGatewayProxyEvent) {
         console.log('Here is the event :', event);
-        const theRequest: ISomeLambdaRequest = JSON.parse(event.body)
+        const theRequest = JSON.parse(event.body)
         console.log('Here is the request: ', theRequest);
         const { connectionId: connectionId, domainName: domainName, stage: stage } = event.requestContext;
 
@@ -23,7 +23,7 @@ export class SomeLambda {
             domainName,
             stage,
             connectionId,
-            message: 'Yay you did it!'
+            message: `Your message body: ${theRequest.message}`
         });
         return {
             statusCode: 200
