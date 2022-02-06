@@ -1,0 +1,30 @@
+service: eventBridgeThingy
+
+custom:
+  webpack:
+    webpackConfig: ./webpack.config.js
+    includeModules: true
+
+plugins:
+  - serverless-webpack
+
+package:
+  individually: true
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+  stage: ${opt:stage, 'development'}
+  region: ${opt:region, 'us-east-1'}
+  stackName: ${self:service}-${self:provider.stage}
+  timeout: 29
+  profile: ZachTerraform
+  apiGateway:
+    shouldStartNameWithService: true
+  iamManagedPolicies:
+    - "arn:aws:iam::aws:policy/AmazonEventBridgeFullAccess"
+      
+functions:
+  postToEventBridge:
+    handler: lambdas/postToEventBridge/post.executePostToEventBridge
+    
