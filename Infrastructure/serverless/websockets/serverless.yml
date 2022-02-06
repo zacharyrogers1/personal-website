@@ -47,4 +47,10 @@ functions:
     events:
       - websocket:
           route: someLambda
+  LargePayload:
+    handler: lambdas/largePayload/largePayload.executeLargePayload
+    name: '${self:service}-WebsocketLargePayload'
+    events:
+      - websocket:
+          route: largePayload
           

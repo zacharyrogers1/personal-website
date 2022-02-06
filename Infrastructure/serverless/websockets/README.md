@@ -13,3 +13,8 @@ The action property correlates with the serverless.yml file lambda.events.websoc
 Server -> Client Messaging
 
 Whenever a client connects to websockets API they are given a connectionId. To send a message from the server to the client the lambda must be given this connectionId and the url that the client is connected to. In technical terms to send a message the lambda needs to create a new ApiGatewayManagementApi(), set the endpoint property to ws.endpoint = new Endpoint(`${domainName}/${stage}`), postToTheConnection with the message and connectionId.
+
+
+Maximum Payload Sizes
+The max payload size that the client can send the server and the server can send the client is 128 KB. When the client sends a message larger than that the websockets connection is closed. When the server sends a message larger than that then the lambda will error out but the websockets connection will still be alive.
+

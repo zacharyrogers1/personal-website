@@ -6,7 +6,7 @@ export function sendMessageToClient(ws: ApiGatewayManagementApi, params: ISendMe
 
   const postParams: ApiGatewayManagementApi.PostToConnectionRequest = {
     Data: params.message,
-    ConnectionId: params.connectionId
+    ConnectionId: params.connectionId,
   }
 
   return ws.postToConnection(postParams).promise();
