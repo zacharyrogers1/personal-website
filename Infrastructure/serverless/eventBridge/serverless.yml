@@ -19,6 +19,8 @@ provider:
   stackName: ${self:service}-${self:provider.stage}
   timeout: 29
   profile: ZachTerraform
+  environment:
+    NODE_OPTIONS: "--enable-source-maps"
   apiGateway:
     shouldStartNameWithService: true
   iamManagedPolicies:
@@ -27,4 +29,6 @@ provider:
 functions:
   postToEventBridge:
     handler: lambdas/postToEventBridge/post.executePostToEventBridge
+  packager:
+    handler: lambdas/packager.packagerThing
     
