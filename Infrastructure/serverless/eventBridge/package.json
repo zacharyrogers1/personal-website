@@ -7,10 +7,8 @@
     "coverage": "nyc -r text -e .ts -x \"test/*.spec.ts\" npm run testOnly",
     "testOnly": "ts-node node_modules/jasmine/bin/jasmine --config=jasmine.json",
     "deploy": "serverless deploy",
-    "remove": "serverless remove"
-  },
-  "dependencies": {
-    "source-map-support": "^0.5.10"
+    "remove": "serverless remove",
+    "build": "serverless webpack"
   },
   "devDependencies": {
     "@types/aws-lambda": "^8.10.17",
