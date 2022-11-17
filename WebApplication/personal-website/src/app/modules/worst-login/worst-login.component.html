@@ -1,0 +1,30 @@
+<div class='usernameX'>
+  <mat-form-field id='usernameBox' #usernameBox class='usernameY'>
+    <mat-label style="font-size:20px;">Username</mat-label>
+    <input matInput [formControl]="loginForm.controls.username" #usernameInput style="font-size:30px;">
+  </mat-form-field>
+</div>
+<div class='passwordX'>
+  <mat-form-field id='passwordBox' #passwordBox class='passwordY'>
+    <mat-label style="font-size:20px;">Password</mat-label>
+    <input matInput [formControl]="loginForm.controls.password" #passwordInput type='password' style="font-size:30px;">
+  </mat-form-field>
+</div>
+<div class='entire-container'>
+  <mat-card class='mat-card'>
+    <mat-card-header>
+      <mat-card-title>
+        Sign Into Your Account
+      </mat-card-title>
+    </mat-card-header>
+    <mat-card-content *ngIf='!successMessage; else elseBlock'>
+
+    </mat-card-content>
+    <ng-template #elseBlock>
+      <h1>{{successMessage}}</h1>
+    </ng-template>
+
+    <button mat-raised-button color='primary' (click)='login()'>{{loginButtonText}}</button>
+    <mat-error *ngIf='loginForm.invalid && loginForm.dirty'>Hello</mat-error>
+  </mat-card>
+</div>

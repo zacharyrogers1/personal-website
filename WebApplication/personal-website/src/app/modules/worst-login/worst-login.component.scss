@@ -1,0 +1,53 @@
+.entire-container {
+  display: flex;
+  justify-content: center;
+  height: 100%;
+  align-items: center;
+}
+
+.mat-card {
+  max-width: 600px;
+  display: flex;
+  flex-direction: column;
+}
+
+mat-card-content {
+  display: flex;
+  flex-direction: column;
+}
+
+
+
+#usernameBox {
+  width:300px
+}
+#passwordBox {
+  width:300px
+}
+
+.passwordX {
+  animation: x 6.2s linear infinite alternate;
+}
+
+.passwordY {
+  animation: y 13s linear infinite alternate;
+}
+
+.usernameX {
+  animation: x 13s linear infinite alternate;
+}
+
+.usernameY {
+  animation: y 6.2s linear infinite alternate;
+}
+
+@keyframes x {
+  100% {
+    transform: translateX(calc(100vw - 300px));
+  }
+}
+@keyframes y {
+  100% {
+    transform: translateY(calc(100vh - 100px));
+  }
+}
